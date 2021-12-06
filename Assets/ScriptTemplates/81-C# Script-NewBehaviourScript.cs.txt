@@ -1,0 +1,19 @@
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region Serialized Fields
+    #NOTRIM#
+    #endregion
+    #region Private Fields
+    #NOTRIM#
+    #endregion
+    #region Private Methods
+    #NOTRIM#
+    #endregion
+    #region Public Methods
+    #NOTRIM#
+    #endregion
+}
+#ROOTNAMESPACEEND#
