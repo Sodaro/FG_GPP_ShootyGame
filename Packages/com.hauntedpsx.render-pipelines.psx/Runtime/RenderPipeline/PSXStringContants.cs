@@ -73,7 +73,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public static readonly string s_CRT_MASK_VGA_STRETCHED = "_CRT_MASK_VGA_STRETCHED";
         public static readonly string s_CRT_MASK_TEXTURE = "_CRT_MASK_TEXTURE";
         public static readonly string s_CRT_MASK_DISABLED = "_CRT_MASK_DISABLED";
-        public static readonly string s_SKY_MODE_FOG_COLOR = "_SKY_MODE_FOG_COLOR"; 
+        public static readonly string s_SKY_MODE_FOG_COLOR = "_SKY_MODE_FOG_COLOR";
         public static readonly string s_SKY_MODE_BACKGROUND_COLOR = "_SKY_MODE_BACKGROUND_COLOR";
         public static readonly string s_SKY_MODE_SKYBOX = "_SKY_MODE_SKYBOX";
         public static readonly string s_SKY_MODE_TILED_LAYERS = "_SKY_MODE_TILED_LAYERS";
@@ -181,7 +181,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public static readonly int _TonemapperIsEnabled = Shader.PropertyToID("_TonemapperIsEnabled");
         public static readonly int _TonemapperContrast = Shader.PropertyToID("_TonemapperContrast");
         public static readonly int _TonemapperShoulder = Shader.PropertyToID("_TonemapperShoulder");
-        public static readonly int _TonemapperWhitepoint = Shader.PropertyToID("_TonemapperWhitepoint"); 
+        public static readonly int _TonemapperWhitepoint = Shader.PropertyToID("_TonemapperWhitepoint");
         public static readonly int _TonemapperGraypointCoefficients = Shader.PropertyToID("_TonemapperGraypointCoefficients");
         public static readonly int _TonemapperCrossTalk = Shader.PropertyToID("_TonemapperCrossTalk");
         public static readonly int _TonemapperSaturation = Shader.PropertyToID("_TonemapperSaturation");
@@ -211,7 +211,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public static readonly int _SkyTiledLayersSkyColorLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyColorLayer0");
         public static readonly int _SkyTiledLayersSkyTextureLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyTextureLayer0");
         public static readonly int _SkyTiledLayersSkyTextureScaleOffsetLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyTextureScaleOffsetLayer0");
-        public static readonly int _SkyTiledLayersSkyRotationLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyRotationLayer0"); 
+        public static readonly int _SkyTiledLayersSkyRotationLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyRotationLayer0");
         public static readonly int _SkyTiledLayersSkyScrollScaleLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyScrollScaleLayer0");
         public static readonly int _SkyTiledLayersSkyScrollRotationLayer0 = Shader.PropertyToID("_SkyTiledLayersSkyScrollRotationLayer0");
         public static readonly int _SkyTiledLayersSkyColorLayer1 = Shader.PropertyToID("_SkyTiledLayersSkyColorLayer1");

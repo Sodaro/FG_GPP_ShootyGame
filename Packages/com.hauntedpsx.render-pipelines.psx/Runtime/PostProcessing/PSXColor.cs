@@ -1,11 +1,4 @@
-
-
-using System;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEditor;
-using UnityEngine.Experimental.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
 
 namespace HauntedPSX.RenderPipelines.PSX.Runtime
 {
@@ -32,7 +25,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         {
             float sRGBLo = x * 12.92f;
             float sRGBHi = (Mathf.Pow(x, 1.0f / 2.4f) * 1.055f) - 0.055f;
-            float sRGB   = (x <= 0.0031308f) ? sRGBLo : sRGBHi;
+            float sRGB = (x <= 0.0031308f) ? sRGBLo : sRGBHi;
             return sRGB;
         }
 
@@ -48,7 +41,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public static float TonemapperGenericScalar(float x, float contrast, float shoulder, Vector2 graypointCoefficients)
         {
             return Mathf.Clamp01(
-                Mathf.Pow(x, contrast) 
+                Mathf.Pow(x, contrast)
                 / (Mathf.Pow(x, contrast * shoulder) * graypointCoefficients.x + graypointCoefficients.y)
             );
         }

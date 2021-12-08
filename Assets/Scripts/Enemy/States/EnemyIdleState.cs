@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class EnemyIdleState : EnemyState
 {
     #region Serialized Fields
@@ -30,6 +28,16 @@ public class EnemyIdleState : EnemyState
     public override void Update()
     {
         base.Update();
+        if (_owner.HasTarget == false)
+            return;
+
+        if (_owner.CheckTargetPathValididty() == false)
+            return;
+
+        if (_owner.DistanceToTarget < 50f)
+        {
+            _owner.SetHostile();
+        }
     }
     #endregion
 }

@@ -1,7 +1,6 @@
 using System;
-using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEditor;
+using UnityEngine;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {

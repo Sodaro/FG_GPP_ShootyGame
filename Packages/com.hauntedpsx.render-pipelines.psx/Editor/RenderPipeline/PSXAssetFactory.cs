@@ -1,19 +1,16 @@
-using System;
+using HauntedPSX.RenderPipelines.PSX.Runtime;
 using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
-using UnityEditor;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
     [ExecuteInEditMode]
     static class PSXRenderPipelineAssetFactory
     {
-    	static readonly string s_PackagePath = "Packages/com.hauntedpsx.render-pipelines.psx/";
-        
+        static readonly string s_PackagePath = "Packages/com.hauntedpsx.render-pipelines.psx/";
+
         [MenuItem("HauntedPS1/Create HauntedPS1 Render Pipeline Asset", priority = CoreUtils.assetCreateMenuPriority1)]
         static void CreatePSXRenderPipelineAsset()
         {

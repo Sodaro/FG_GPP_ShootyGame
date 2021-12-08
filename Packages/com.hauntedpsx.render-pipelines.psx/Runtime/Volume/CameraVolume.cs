@@ -23,12 +23,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class CameraAspectModeParameter : VolumeParameter<CameraAspectMode>
         {
             public CameraAspectModeParameter(CameraAspectMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         public BoolParameter isFrameLimitEnabled = new BoolParameter(false);
         public MinIntParameter frameLimit = new MinIntParameter(24, 1);
-        public CameraAspectModeParameter aspectMode = new CameraAspectModeParameter(CameraAspectMode.FreeBleedPixelPerfect); 
+        public CameraAspectModeParameter aspectMode = new CameraAspectModeParameter(CameraAspectMode.FreeBleedPixelPerfect);
         public ClampedIntParameter targetRasterizationResolutionWidth = new ClampedIntParameter(256, 1, 4096);
         public ClampedIntParameter targetRasterizationResolutionHeight = new ClampedIntParameter(224, 1, 4096);
         public BoolParameter isDepthBufferEnabled = new BoolParameter(true);

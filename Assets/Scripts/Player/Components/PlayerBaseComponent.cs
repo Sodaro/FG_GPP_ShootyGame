@@ -2,11 +2,12 @@ using UnityEngine;
 
 public abstract class PlayerBaseComponent : MonoBehaviour
 {
+    public bool dirtyFlag = false;
     #region Public Methods
-    public virtual void C_Initialize() { }
-    public virtual void C_Initialize(PlayerBaseComponent component) { }
-    public virtual void C_Update(float delta) { }
-    public virtual void C_Update() { }
-    public virtual void C_FixedUpdate(float fixedDelta) { }
+    public virtual void Initialize() { }
+    public virtual void Initialize(PlayerBaseComponent component) { }
+    public virtual void OnUpdate(float delta) { }
+    public virtual void OnUpdate() { }
+    public virtual void OnFixedUpdate(float fixedDelta) { }
     #endregion
 }

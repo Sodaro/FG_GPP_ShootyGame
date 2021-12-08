@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 public class ServiceLocator
 {
     private ServiceLocator() { }
@@ -9,9 +9,8 @@ public class ServiceLocator
     public static void Initialize()
     {
         Current = new ServiceLocator();
-        Debug.Log($"servicelocator initialized");
     }
-    public void Register<T>(T service) where T : IService 
+    public void Register<T>(T service) where T : IService
     {
         int hash = typeof(T).GetHashCode();
         if (services.ContainsKey(hash))

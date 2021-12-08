@@ -1,8 +1,6 @@
 using System;
-using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEditor;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
+using UnityEngine;
 using static HauntedPSX.RenderPipelines.PSX.Editor.PSXMaterialUtils;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
@@ -44,7 +42,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         protected MaterialProperty affineTextureWarpingWeightProp { get; set; }
 
         protected MaterialProperty precisionGeometryWeightDeprecatedProp { get; set; }
-        
+
         protected MaterialProperty precisionGeometryOverrideModeProp { get; set; }
 
         protected MaterialProperty precisionGeometryOverrideParametersProp { get; set; }
@@ -177,7 +175,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             m_SurfaceInputsFoldout = true;
             m_AdvancedFoldout = false;
 
-            foreach (var obj in  materialEditor.targets)
+            foreach (var obj in materialEditor.targets)
                 MaterialChanged((Material)obj);
         }
 
@@ -189,7 +187,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             EditorGUI.BeginChangeCheck();
 
             m_SurfaceOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceOptionsFoldout, Styles.SurfaceOptions);
-            if(m_SurfaceOptionsFoldout)
+            if (m_SurfaceOptionsFoldout)
             {
                 DrawSurfaceOptions(material);
                 EditorGUILayout.Space();
@@ -216,7 +214,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                foreach (var obj in  materialEditor.targets)
+                foreach (var obj in materialEditor.targets)
                     MaterialChanged((Material)obj);
             }
         }
@@ -250,7 +248,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             PSXMaterialUtils.DrawAdvancedOptions(material, materialEditor);
         }
 
-        public virtual void DrawAdditionalFoldouts(Material material){}
+        public virtual void DrawAdditionalFoldouts(Material material) { }
 
         protected virtual void DrawEmissionProperties(Material material)
         {

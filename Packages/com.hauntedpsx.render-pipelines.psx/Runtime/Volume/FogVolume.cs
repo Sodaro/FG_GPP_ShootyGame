@@ -19,7 +19,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class FogFalloffModeParameter : VolumeParameter<FogFalloffMode>
         {
             public FogFalloffModeParameter(FogFalloffMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         [Serializable]

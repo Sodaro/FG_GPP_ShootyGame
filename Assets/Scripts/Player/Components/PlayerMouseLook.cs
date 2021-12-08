@@ -13,7 +13,7 @@ public class PlayerMouseLook : PlayerBaseComponent
     #endregion
 
     #region Public Methods
-    public override void C_Initialize(PlayerBaseComponent playerInput)
+    public override void Initialize(PlayerBaseComponent playerInput)
     {
         _input = (PlayerInput)playerInput;
         _cameraTransform = Camera.main.transform;
@@ -21,11 +21,20 @@ public class PlayerMouseLook : PlayerBaseComponent
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public override void C_Update(float delta)
+    public override void OnUpdate(float delta)
     {
-        Vector3 mouseInput = _input.inputs.mouseInput;
+        Vector3 mouseInput = _input.Inputs.mouseInput;
         _playerTransform.rotation *= Quaternion.AngleAxis(mouseInput.x * _rotationSpeed * delta, Vector3.up);
-        _cameraTransform.localRotation *= Quaternion.AngleAxis(-mouseInput.y * _rotationSpeed * delta, Vector3.right);
+        Vector3 localEuler = _cameraTransform.localRotation.eulerAngles;
+
+        float xRot = localEuler.x;
+        if (xRot > 180)
+            xRot -= 360;
+
+        if ((xRot < 85f && mouseInput.y < 0) || (xRot > -85f && mouseInput.y > 0))
+        {
+            _cameraTransform.localRotation *= Quaternion.AngleAxis(-mouseInput.y * _rotationSpeed * delta, Vector3.right);
+        }
     }
     #endregion
 }

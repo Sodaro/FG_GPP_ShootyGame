@@ -1,7 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -48,7 +45,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
             [Reload("Runtime/RenderPipelineResources/Texture/BlueNoise16/L/LDR_LLL1_{0}.png", 0, 32)]
             public Texture2D[] blueNoise16LTex;
-            
+
             [Reload("Runtime/RenderPipelineResources/Texture/BlueNoise16/RGB/LDR_RGB1_{0}.png", 0, 32)]
             public Texture2D[] blueNoise16RGBTex;
 

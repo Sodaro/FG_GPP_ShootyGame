@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class EnemyFSM
 {
     #region Public Methods And Properties
@@ -8,7 +6,7 @@ public class EnemyFSM
         CurrentState = initialState;
         CurrentState.Enter(enemy);
     }
-    public EnemyState CurrentState {get; private set;}
+    public EnemyState CurrentState { get; private set; }
     public void ChangeState(EnemyState newState, Enemy enemy)
     {
         if (CurrentState != null)

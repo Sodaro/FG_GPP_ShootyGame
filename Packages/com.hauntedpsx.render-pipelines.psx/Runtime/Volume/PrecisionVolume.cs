@@ -19,7 +19,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class DrawDistanceFalloffModeParameter : VolumeParameter<DrawDistanceFalloffMode>
         {
             public DrawDistanceFalloffModeParameter(DrawDistanceFalloffMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         public BoolParameter geometryEnabled = new BoolParameter(true);

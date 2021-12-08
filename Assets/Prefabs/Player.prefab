@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6a711b212e462d94db4e25ca5e21c0b1, type: 2}
+  - {fileID: 2100000, guid: d589156d274bab24f90f2173e644e684, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,7 +126,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.156, g: 0.156, b: 0.156, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 1
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 3275818641793463701}
   - component: {fileID: 3275818641793463698}
   - component: {fileID: 3275818641793463699}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3275818641793463708}
-  m_LocalRotation: {x: -0.004787535, y: -0, z: -0, w: 0.99998856}
+  m_LocalRotation: {x: -0.004790863, y: 0, z: 0, w: 0.99998856}
   m_LocalPosition: {x: 20.63, y: 1.02, z: -1.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -310,6 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea09d216ceb24d948912fdef2fb6d8e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sprintSpeed: 10
   _moveSpeed: 5
   _jumpSpeed: 5
 --- !u!114 &3275818641793463701
@@ -336,8 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98badaf08efad0b4eb1b57ebb66d7ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleFlashPrefab: {fileID: 0}
-  muzzleTransform: {fileID: 0}
+  _muzzleFlashPrefab: {fileID: 4003962588294540896, guid: 6d3e69e103f831e4a9f026b7c3083157, type: 3}
+  _muzzleTransform: {fileID: 3275818642235223986}
 --- !u!114 &3275818641793463699
 MonoBehaviour:
   m_ObjectHideFlags: 0

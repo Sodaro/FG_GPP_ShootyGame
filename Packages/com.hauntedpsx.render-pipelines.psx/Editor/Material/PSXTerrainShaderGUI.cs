@@ -1,9 +1,6 @@
 using System;
-using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEditor;
-using UnityEngine.Experimental.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
+using UnityEngine;
 using static HauntedPSX.RenderPipelines.PSX.Editor.PSXMaterialUtils;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
@@ -176,7 +173,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             // m_SurfaceInputsFoldout = true;
             // m_AdvancedFoldout = false;
 
-            foreach (var obj in  materialEditor.targets)
+            foreach (var obj in materialEditor.targets)
                 MaterialChanged((Material)obj);
         }
 
@@ -188,7 +185,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             EditorGUI.BeginChangeCheck();
 
             m_SurfaceOptionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(m_SurfaceOptionsFoldout, Styles.SurfaceOptions);
-            if(m_SurfaceOptionsFoldout)
+            if (m_SurfaceOptionsFoldout)
             {
                 DrawSurfaceOptions(material);
                 EditorGUILayout.Space();
@@ -215,7 +212,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                foreach (var obj in  materialEditor.targets)
+                foreach (var obj in materialEditor.targets)
                     MaterialChanged((Material)obj);
             }
         }
@@ -280,7 +277,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     Material material = materialEditor.target as Material;
                     DrawTextureFilterModeErrorMessagesForTexture(material, materialEditor, terrainLayer.diffuseTexture, "Terrain Layer Diffuse Texture");
                 }
-                
+
                 --EditorGUI.indentLevel;
             }
             diffuseRemapMax.w = 1;

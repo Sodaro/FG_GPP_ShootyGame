@@ -22,7 +22,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class CRTGrateMaskModeParameter : VolumeParameter<CRTGrateMaskMode>
         {
             public CRTGrateMaskModeParameter(CRTGrateMaskMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         public BoolParameter isEnabled = new BoolParameter(true);

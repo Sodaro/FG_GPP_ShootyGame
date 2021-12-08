@@ -1,8 +1,6 @@
+using HauntedPSX.RenderPipelines.PSX.Runtime;
 using UnityEditor;
 using UnityEditor.Rendering;
-using UnityEngine;
-using UnityEngine.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
@@ -64,7 +62,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             PropertyField(m_GrateMaskIntensityMin, EditorGUIUtility.TrTextContent("Grate Mask Intensity Min", "Controls the blackpoint of the RGB color matrix cells."));
             PropertyField(m_GrateMaskIntensityMax, EditorGUIUtility.TrTextContent("Grate Mask Intensity Max", "Controls the whitepoint of the RGB color matrix cells."));
             PropertyField(m_BarrelDistortionX, EditorGUIUtility.TrTextContent("Barrel Distortion X", "Controls the intensity of the simulated CRT barrel distortion (fish bowl effect) horizontally."));
-            PropertyField(m_BarrelDistortionY, EditorGUIUtility.TrTextContent("Barrel Distortion Y", "Controls the intensity of the simulated CRT barrel distortion (fish bowl effect) vertically."));    
+            PropertyField(m_BarrelDistortionY, EditorGUIUtility.TrTextContent("Barrel Distortion Y", "Controls the intensity of the simulated CRT barrel distortion (fish bowl effect) vertically."));
             PropertyField(m_Vignette, EditorGUIUtility.TrTextContent("Vignette", "Controls the amount of image darkening that occurs at the side of the CRT screen."));
         }
     }

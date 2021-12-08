@@ -20,7 +20,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class SkyModeParameter : VolumeParameter<SkyMode>
         {
             public SkyModeParameter(SkyMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         // TODO: This type was copied from the editor-only PSXMaterialUtils static class.
@@ -39,14 +39,14 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class TextureFilterModeParameter : VolumeParameter<TextureFilterMode>
         {
             public TextureFilterModeParameter(TextureFilterMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         public SkyModeParameter skyMode = new SkyModeParameter(SkyMode.FogColor);
         public ClampedFloatParameter framebufferDitherWeight = new ClampedFloatParameter(1.0f, 0.0f, 1.0f);
         public Vector3Parameter skyRotation = new Vector3Parameter(Vector3.zero);
         public TextureFilterModeParameter textureFilterMode = new TextureFilterModeParameter(TextureFilterMode.TextureImportSettings);
-        
+
         public TextureParameter skyboxTexture = new TextureParameter(null);
 
         public MinFloatParameter tiledLayersSkyHeightScale = new MinFloatParameter(0.25f, 0.0f);

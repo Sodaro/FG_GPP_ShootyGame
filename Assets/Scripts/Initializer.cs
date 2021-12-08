@@ -1,5 +1,5 @@
-using UnityEngine;
 using Observer;
+using UnityEngine;
 public class Initializer : MonoBehaviour
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -7,5 +7,6 @@ public class Initializer : MonoBehaviour
     {
         ServiceLocator.Initialize();
         ServiceLocator.Current.Register(new EventHandler());
+        ServiceLocator.Current.Register(new AudioSystem());
     }
 }

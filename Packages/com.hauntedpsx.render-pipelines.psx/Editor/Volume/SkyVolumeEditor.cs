@@ -1,8 +1,8 @@
+using HauntedPSX.RenderPipelines.PSX.Runtime;
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
@@ -55,7 +55,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             m_TiledLayersSkyColorLayer1 = Unpack(o.Find(x => x.tiledLayersSkyColorLayer1));
             m_TiledLayersSkyTextureLayer1 = Unpack(o.Find(x => x.tiledLayersSkyTextureLayer1));
             m_TiledLayersSkyTextureScaleOffsetLayer1 = Unpack(o.Find(x => x.tiledLayersSkyTextureScaleOffsetLayer1));
-            m_TiledLayersSkyRotationLayer1 = Unpack(o.Find(x => x.tiledLayersSkyRotationLayer1)); 
+            m_TiledLayersSkyRotationLayer1 = Unpack(o.Find(x => x.tiledLayersSkyRotationLayer1));
             m_TiledLayersSkyScrollScaleLayer1 = Unpack(o.Find(x => x.tiledLayersSkyScrollScaleLayer1));
             m_TiledLayersSkyScrollRotationLayer1 = Unpack(o.Find(x => x.tiledLayersSkyScrollRotationLayer1));
         }
@@ -64,7 +64,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         {
             PropertyField(m_SkyMode, EditorGUIUtility.TrTextContent("Sky Mode", "Controls the mode the sky is rendered in.\nFog Color fills the sky with the fog color defined in the Fog Volume. Useful for smooth blending between fog and sky.\nBackground Color fills the sky with the background color defined on your Camera.\nSkybox fills the sky with the Skybox Texture specified on this SkyVolume.\nTiled Layers renders the sky using two 2D textures, projected onto an ellipsoid, tiled, scrolled, and blended. Useful for emulating Quake-era skys."));
             PropertyField(m_FramebufferDitherWeight, EditorGUIUtility.TrTextContent("Framebuffer Dither Weight", "Controls the amount of dither applied to the sky between precision steps. A value of 0.0 will apply no dither to the sky. A value of 1.0 will apply the maximum amount of dither specified in the PrecisionVolume settings."));
-            
+
             if (m_SkyMode.value.intValue == (int)SkyVolume.SkyMode.Skybox
                 || m_SkyMode.value.intValue == (int)SkyVolume.SkyMode.TiledLayers)
             {
@@ -88,7 +88,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     {
                         m_SkyboxTexture.value.objectReferenceValue = null;
                     }
-                }                
+                }
             }
             else if (m_SkyMode.value.intValue == (int)SkyVolume.SkyMode.TiledLayers)
             {

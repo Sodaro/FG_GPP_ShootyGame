@@ -1,9 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using System;
 using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace HauntedPSX.RenderPipelines.PSX.Runtime
 {

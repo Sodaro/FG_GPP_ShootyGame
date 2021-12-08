@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Experimental.Rendering;
-using System.Collections.Generic;
-using Unity.Collections;
 using GlobalIllumination = UnityEngine.Experimental.GlobalIllumination;
 using Lightmapping = UnityEngine.Experimental.GlobalIllumination.Lightmapping;
 
@@ -173,7 +170,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             for (int i = globalLightsSkippedCount + additionalLightsCount; i < perObjectLightIndexMap.Length; ++i)
                 perObjectLightIndexMap[i] = -1;
 
-            cullingResults.SetLightIndexMap(perObjectLightIndexMap);        
+            cullingResults.SetLightIndexMap(perObjectLightIndexMap);
             perObjectLightIndexMap.Dispose();
             return additionalLightsCount;
         }

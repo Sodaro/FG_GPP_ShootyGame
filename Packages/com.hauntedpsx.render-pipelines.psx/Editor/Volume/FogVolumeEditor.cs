@@ -1,8 +1,7 @@
+using HauntedPSX.RenderPipelines.PSX.Runtime;
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering;
-using HauntedPSX.RenderPipelines.PSX.Runtime;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
@@ -136,7 +135,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     PropertyField(m_HeightMinLayer1, EditorGUIUtility.TrTextContent("Height Min Secondary", "Controls the height that fog reaches full opacity. Only has an effect if Height Falloff Enabled is true."));
                     PropertyField(m_HeightMaxLayer1, EditorGUIUtility.TrTextContent("Height Max Secondary", "Controls the height that fog reaches zero opacity. Only has an effect if Height Falloff Enabled is true."));
                 }
-            
+
             }
         }
     }

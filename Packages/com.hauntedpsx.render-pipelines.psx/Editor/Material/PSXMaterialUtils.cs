@@ -1,9 +1,9 @@
-using System;
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEditor;
-using UnityEngine.Experimental.Rendering;
 using HauntedPSX.RenderPipelines.PSX.Runtime;
+using System;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
@@ -388,7 +388,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
             public static readonly GUIContent uvAnimationFrameLimit = new GUIContent("UV Animation Frames Per Second",
                 "Controls the frames per second that the uv animation is updated at.\nThis is a purely visual control, it does not affect performance.");
-            
+
             public static readonly GUIContent uvAnimationPanLinearVelocity = new GUIContent("UV Animation Scroll Velocity",
                 "Controls the distance per second (in uv space) that the uvs will pan.");
 
@@ -400,10 +400,10 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
             public static readonly GUIContent uvAnimationFlipbookFrequency = new GUIContent("UV Animation Flipbook Frequency",
                 "Controls the speed of flipbook frame change.");
-            
+
             public static readonly GUIContent uvAnimationFlipbookTilesX = new GUIContent("UV Animation Flipbook Tiles X",
                 "Specifies amount of horizontal tiles of the flipbook.");
-            
+
             public static readonly GUIContent uvAnimationFlipbookTilesY = new GUIContent("UV Animation Flipbook Tiles Y",
                 "Specifies amount of vertical tiles of the flipbook.");
 
@@ -415,7 +415,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
             public static readonly GUIContent emissionBakedMultiplier = new GUIContent("Emission Baked Multiplier",
                 "Multiplier for artificially increasing or decreasing emission intensity when captured in baked lighting. In general, this should kept at 1.0. Increasing or decreasing this value is not physically plausible. Values other than 1.0 can be useful when fine tuning the amount of light an emissive surface emits in the bake, without affecting the way the emissive surface appears.");
-        
+
             public static readonly GUIContent reflection = new GUIContent("Reflection",
                 "Specifies whether or not to apply cubemap reflections. Turn off when not in use to avoid performance cost.");
 
@@ -462,7 +462,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     return properties[index];
             }
             if (propertyIsMandatory)
-                throw new ArgumentException("Could not find MaterialProperty: '" + propertyName + "', Num properties: " + (object) properties.Length);
+                throw new ArgumentException("Could not find MaterialProperty: '" + propertyName + "', Num properties: " + (object)properties.Length);
             return null;
         }
 
@@ -535,7 +535,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         public static void SetupMaterialShadingEvaluationMode(Material material)
         {
             if (material == null) { throw new ArgumentNullException("material"); }
-                
+
             ShadingEvaluationMode shadingEvaluationMode = (ShadingEvaluationMode)material.GetFloat(PropertyIDs._ShadingEvaluationMode);
 
             switch (shadingEvaluationMode)
@@ -559,7 +559,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                 default:
                     Debug.Assert(false);
                     break;
-            }   
+            }
         }
 
         public static void SetupMaterialTextureFilterMode(Material material)
@@ -620,7 +620,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         {
             if (material == null)
                 throw new ArgumentNullException("material");
-                
+
             LightingMode lightingMode = (LightingMode)material.GetFloat(PropertyIDs._LightingMode);
             VertexColorMode vertexColorMode = vertexColorSupported
                 ? (VertexColorMode)material.GetFloat(PropertyIDs._VertexColorMode)
@@ -687,43 +687,43 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             switch (lightingMode)
             {
                 case LightingMode.Unlit:
-                {
-                    material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    material.DisableKeyword(Keywords._VERTEX_COLOR_MODE_LIGHTING);
-                    material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
-                    break;
-                }
-                case LightingMode.Lit:
-                default: // Old versions of the material can have enum values serialized outside the range that we are currently supporting. Default these materials back to lit.
-                {
-                    if (lightingBakedEnabled)
-                    {
-                        material.EnableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    }
-                    else
                     {
                         material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    }
-
-                    if (lightingVertexColorEnabled)
-                    {
-                        material.EnableKeyword(Keywords._VERTEX_COLOR_MODE_LIGHTING);
-                    }
-                    else
-                    {
                         material.DisableKeyword(Keywords._VERTEX_COLOR_MODE_LIGHTING);
-                    }
-
-                    if (lightingDynamicEnabled)
-                    {
-                        material.EnableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
-                    }
-                    else
-                    {
                         material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        break;
                     }
-                    break;
-                }
+                case LightingMode.Lit:
+                default: // Old versions of the material can have enum values serialized outside the range that we are currently supporting. Default these materials back to lit.
+                    {
+                        if (lightingBakedEnabled)
+                        {
+                            material.EnableKeyword(Keywords._LIGHTING_BAKED_ON);
+                        }
+                        else
+                        {
+                            material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
+                        }
+
+                        if (lightingVertexColorEnabled)
+                        {
+                            material.EnableKeyword(Keywords._VERTEX_COLOR_MODE_LIGHTING);
+                        }
+                        else
+                        {
+                            material.DisableKeyword(Keywords._VERTEX_COLOR_MODE_LIGHTING);
+                        }
+
+                        if (lightingDynamicEnabled)
+                        {
+                            material.EnableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        }
+                        else
+                        {
+                            material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        }
+                        break;
+                    }
             }
         }
 
@@ -731,7 +731,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         {
             if (material == null)
                 throw new ArgumentNullException("material");
-                
+
             LightingMode lightingMode = (LightingMode)material.GetFloat(PropertyIDs._LightingMode);
 
             bool lightingBakedEnabled = material.GetFloat(PropertyIDs._LightingBaked) == 1;
@@ -740,33 +740,33 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             switch (lightingMode)
             {
                 case LightingMode.Unlit:
-                {
-                    material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
-                    break;
-                }
-                case LightingMode.Lit:
-                default: // Old versions of the material can have enum values serialized outside the range that we are currently supporting. Default these materials back to lit.
-                {
-                    if (lightingBakedEnabled)
-                    {
-                        material.EnableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    }
-                    else
                     {
                         material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
-                    }
-
-                    if (lightingDynamicEnabled)
-                    {
-                        material.EnableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
-                    }
-                    else
-                    {
                         material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        break;
                     }
-                    break;
-                }
+                case LightingMode.Lit:
+                default: // Old versions of the material can have enum values serialized outside the range that we are currently supporting. Default these materials back to lit.
+                    {
+                        if (lightingBakedEnabled)
+                        {
+                            material.EnableKeyword(Keywords._LIGHTING_BAKED_ON);
+                        }
+                        else
+                        {
+                            material.DisableKeyword(Keywords._LIGHTING_BAKED_ON);
+                        }
+
+                        if (lightingDynamicEnabled)
+                        {
+                            material.EnableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        }
+                        else
+                        {
+                            material.DisableKeyword(Keywords._LIGHTING_DYNAMIC_ON);
+                        }
+                        break;
+                    }
             }
         }
 
@@ -792,7 +792,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                 material.DisableKeyword(Keywords._ALPHATEST_ON);
             }
 
-            
+
             if (surfaceType == SurfaceType.Opaque)
             {
                 if (alphaClip)
@@ -817,7 +817,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             else // SurfaceType == SurfaceType.Transparent
             {
                 PSXMaterialUtils.BlendMode blendMode = (PSXMaterialUtils.BlendMode)material.GetFloat(PropertyIDs._Blend);
-                
+
                 // Specific Transparent Mode Settings
                 switch (blendMode)
                 {
@@ -991,7 +991,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             if (mainTexProp != null && mainColorProp != null) // Draw the mainTex, most shader will have at least a mainTex
             {
                 materialEditor.TexturePropertySingleLine(Styles.mainTex, mainTexProp, mainColorProp);
-                
+
                 // TODO Temporary fix for lightmapping, to be replaced with attribute tag.
                 if (material.HasProperty(PropertyIDs._MainTex))
                 {
@@ -1374,27 +1374,27 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     switch (precisionGeometryOverrideMode)
                     {
                         case PrecisionGeometryOverrideMode.Override:
-                        {
-                            // Fast path: precompute the scale and scale inverse transformation cpu side since we will be fully overriding.
-                            precisionGeometryOverride = Mathf.Clamp01(precisionGeometryOverride);
-                            Vector2 precisionGeometryScaleAndScaleInverse = PSXRenderPipeline.ComputePrecisionGeometryParameters(precisionGeometryOverride);
-                            precisionGeometryOverrideParametersProp.vectorValue = new Vector3(precisionGeometryScaleAndScaleInverse.x, precisionGeometryScaleAndScaleInverse.y, precisionGeometryOverride);
-                            break;
-                        }
+                            {
+                                // Fast path: precompute the scale and scale inverse transformation cpu side since we will be fully overriding.
+                                precisionGeometryOverride = Mathf.Clamp01(precisionGeometryOverride);
+                                Vector2 precisionGeometryScaleAndScaleInverse = PSXRenderPipeline.ComputePrecisionGeometryParameters(precisionGeometryOverride);
+                                precisionGeometryOverrideParametersProp.vectorValue = new Vector3(precisionGeometryScaleAndScaleInverse.x, precisionGeometryScaleAndScaleInverse.y, precisionGeometryOverride);
+                                break;
+                            }
                         case PrecisionGeometryOverrideMode.Multiply:
-                        {
-                            precisionGeometryOverride = Mathf.Max(1e-5f, precisionGeometryOverride);
+                            {
+                                precisionGeometryOverride = Mathf.Max(1e-5f, precisionGeometryOverride);
 
-                            // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
-                            precisionGeometryOverrideParametersProp.vectorValue = new Vector3(1.0f, 1.0f, precisionGeometryOverride);
-                            break;
-                        }
+                                // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
+                                precisionGeometryOverrideParametersProp.vectorValue = new Vector3(1.0f, 1.0f, precisionGeometryOverride);
+                                break;
+                            }
                         default:
-                        {
-                            // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
-                            precisionGeometryOverrideParametersProp.vectorValue = new Vector3(1.0f, 1.0f, precisionGeometryOverride);
-                            break;
-                        }
+                            {
+                                // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
+                                precisionGeometryOverrideParametersProp.vectorValue = new Vector3(1.0f, 1.0f, precisionGeometryOverride);
+                                break;
+                            }
                     }
                 }
             }
@@ -1425,42 +1425,42 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                     switch (precisionColorOverrideMode)
                     {
                         case PrecisionColorOverrideMode.Override:
-                        {
-                            precisionColorOverride = modeChanged ? 1.0f : precisionColorOverride; // Assign default.
+                            {
+                                precisionColorOverride = modeChanged ? 1.0f : precisionColorOverride; // Assign default.
 
-                            // Fast path: precompute the scale and scale inverse transformation cpu side since we will be fully overriding.
-                            precisionColorOverride = Mathf.Clamp01(precisionColorOverride);
-                            precisionColorOverride = Mathf.Floor(precisionColorOverride * 7.0f + 0.5f) / 7.0f;
-                            float precisionColorScale = Mathf.Pow(2.0f, precisionColorOverride * 7.0f + 1.0f) - 1.0f;
-                            float precisionColorScaleInverse = 1.0f / precisionColorScale;
-                            precisionColorOverrideParametersProp.vectorValue = new Vector3(precisionColorScale, precisionColorScaleInverse, precisionColorOverride);
-                            break;
-                        }
+                                // Fast path: precompute the scale and scale inverse transformation cpu side since we will be fully overriding.
+                                precisionColorOverride = Mathf.Clamp01(precisionColorOverride);
+                                precisionColorOverride = Mathf.Floor(precisionColorOverride * 7.0f + 0.5f) / 7.0f;
+                                float precisionColorScale = Mathf.Pow(2.0f, precisionColorOverride * 7.0f + 1.0f) - 1.0f;
+                                float precisionColorScaleInverse = 1.0f / precisionColorScale;
+                                precisionColorOverrideParametersProp.vectorValue = new Vector3(precisionColorScale, precisionColorScaleInverse, precisionColorOverride);
+                                break;
+                            }
                         case PrecisionColorOverrideMode.Multiply:
-                        {
-                            precisionColorOverride = modeChanged ? 1.0f : precisionColorOverride; // Assign default.
+                            {
+                                precisionColorOverride = modeChanged ? 1.0f : precisionColorOverride; // Assign default.
 
-                            precisionColorOverride = Mathf.Max(1e-5f, precisionColorOverride);
+                                precisionColorOverride = Mathf.Max(1e-5f, precisionColorOverride);
 
-                            // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
-                            precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
-                            break;
-                        }
+                                // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
+                                precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
+                                break;
+                            }
                         case PrecisionColorOverrideMode.Add:
-                        {
-                            precisionColorOverride = modeChanged ? 0.0f : Mathf.Clamp(precisionColorOverride, -1.0f, 1.0f); // Assign default.
+                            {
+                                precisionColorOverride = modeChanged ? 0.0f : Mathf.Clamp(precisionColorOverride, -1.0f, 1.0f); // Assign default.
 
 
-                            // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
-                            precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
-                            break;
-                        }
+                                // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
+                                precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
+                                break;
+                            }
                         default:
-                        {
-                            // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
-                            precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
-                            break;
-                        }
+                            {
+                                // Scale and Scale Inverse transformation will happen in shader. Just need the raw precisionGeometryOverride value.
+                                precisionColorOverrideParametersProp.vectorValue = new Vector3(255.0f, 1.0f / 255.0f, precisionColorOverride);
+                                break;
+                            }
                     }
                 }
             }
@@ -1483,62 +1483,62 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
             {
                 case UVAnimationMode.None: break;
                 case UVAnimationMode.PanLinear:
-                {
-                    Vector2 panLinearVelocity = modeChanged ? new Vector2(1.0f, 1.0f) : new Vector2(uvAnimationParameters.x, uvAnimationParameters.y);
-
-                    EditorGUI.BeginChangeCheck();
-                    panLinearVelocity = EditorGUILayout.Vector2Field(Styles.uvAnimationPanLinearVelocity, panLinearVelocity);
-                    if (EditorGUI.EndChangeCheck() || modeChanged)
                     {
-                        needsUpdate = true;
-                        uvAnimationParameters = new Vector4(panLinearVelocity.x, panLinearVelocity.y, 0.0f, 0.0f);
+                        Vector2 panLinearVelocity = modeChanged ? new Vector2(1.0f, 1.0f) : new Vector2(uvAnimationParameters.x, uvAnimationParameters.y);
+
+                        EditorGUI.BeginChangeCheck();
+                        panLinearVelocity = EditorGUILayout.Vector2Field(Styles.uvAnimationPanLinearVelocity, panLinearVelocity);
+                        if (EditorGUI.EndChangeCheck() || modeChanged)
+                        {
+                            needsUpdate = true;
+                            uvAnimationParameters = new Vector4(panLinearVelocity.x, panLinearVelocity.y, 0.0f, 0.0f);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case UVAnimationMode.PanSin:
-                {
-                    uvAnimationParameters = modeChanged ? new Vector4(1.0f, 1.0f, 1.0f, 1.0f) : uvAnimationParameters;
-                    Vector2 panSinFrequency = new Vector2(uvAnimationParameters.x, uvAnimationParameters.y);
-                    EditorGUI.BeginChangeCheck();
-                    panSinFrequency = EditorGUILayout.Vector2Field(Styles.uvAnimationPanSinFrequency, panSinFrequency);
-                    if (EditorGUI.EndChangeCheck() || modeChanged)
                     {
-                        needsUpdate = true;
-                        uvAnimationParameters.x = panSinFrequency.x;
-                        uvAnimationParameters.y = panSinFrequency.y;
-                    }
+                        uvAnimationParameters = modeChanged ? new Vector4(1.0f, 1.0f, 1.0f, 1.0f) : uvAnimationParameters;
+                        Vector2 panSinFrequency = new Vector2(uvAnimationParameters.x, uvAnimationParameters.y);
+                        EditorGUI.BeginChangeCheck();
+                        panSinFrequency = EditorGUILayout.Vector2Field(Styles.uvAnimationPanSinFrequency, panSinFrequency);
+                        if (EditorGUI.EndChangeCheck() || modeChanged)
+                        {
+                            needsUpdate = true;
+                            uvAnimationParameters.x = panSinFrequency.x;
+                            uvAnimationParameters.y = panSinFrequency.y;
+                        }
 
-                    Vector2 panSinScale = new Vector2(uvAnimationParameters.z, uvAnimationParameters.w);
-                    EditorGUI.BeginChangeCheck();
-                    panSinScale = EditorGUILayout.Vector2Field(Styles.uvAnimationPanSinScale, panSinScale);
-                    if (EditorGUI.EndChangeCheck() || modeChanged)
-                    {
-                        needsUpdate = true;
-                        uvAnimationParameters.z = panSinScale.x;
-                        uvAnimationParameters.w = panSinScale.y;
+                        Vector2 panSinScale = new Vector2(uvAnimationParameters.z, uvAnimationParameters.w);
+                        EditorGUI.BeginChangeCheck();
+                        panSinScale = EditorGUILayout.Vector2Field(Styles.uvAnimationPanSinScale, panSinScale);
+                        if (EditorGUI.EndChangeCheck() || modeChanged)
+                        {
+                            needsUpdate = true;
+                            uvAnimationParameters.z = panSinScale.x;
+                            uvAnimationParameters.w = panSinScale.y;
+                        }
+                        break;
                     }
-                    break;
-                }
                 case UVAnimationMode.Flipbook:
-                {
-
-                    int flipbookTilesX = modeChanged ? 4 : (int)uvAnimationParameters.x;
-                    int flipbookTilesY = modeChanged ? 4 : (int)uvAnimationParameters.y;
-                    float flipbookFrequency = modeChanged ? 10 : uvAnimationParameters.z;
-                    EditorGUI.BeginChangeCheck();
-
-                    flipbookTilesX = EditorGUILayout.IntField(Styles.uvAnimationFlipbookTilesX, flipbookTilesX);
-                    flipbookTilesY = EditorGUILayout.IntField(Styles.uvAnimationFlipbookTilesY, flipbookTilesY);
-                    flipbookFrequency = EditorGUILayout.FloatField(Styles.uvAnimationFlipbookFrequency, flipbookFrequency);
-
-                    if (EditorGUI.EndChangeCheck() || modeChanged)
                     {
-                        needsUpdate = true;
-                        uvAnimationParameters = new Vector4((float)flipbookTilesX, (float)flipbookTilesY, flipbookFrequency, 0);
-                    }
 
-                    break;
-                }
+                        int flipbookTilesX = modeChanged ? 4 : (int)uvAnimationParameters.x;
+                        int flipbookTilesY = modeChanged ? 4 : (int)uvAnimationParameters.y;
+                        float flipbookFrequency = modeChanged ? 10 : uvAnimationParameters.z;
+                        EditorGUI.BeginChangeCheck();
+
+                        flipbookTilesX = EditorGUILayout.IntField(Styles.uvAnimationFlipbookTilesX, flipbookTilesX);
+                        flipbookTilesY = EditorGUILayout.IntField(Styles.uvAnimationFlipbookTilesY, flipbookTilesY);
+                        flipbookFrequency = EditorGUILayout.FloatField(Styles.uvAnimationFlipbookFrequency, flipbookFrequency);
+
+                        if (EditorGUI.EndChangeCheck() || modeChanged)
+                        {
+                            needsUpdate = true;
+                            uvAnimationParameters = new Vector4((float)flipbookTilesX, (float)flipbookTilesY, flipbookFrequency, 0);
+                        }
+
+                        break;
+                    }
                 default: break;
             }
 
@@ -1575,7 +1575,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
                         frameLimit = Mathf.Clamp(frameLimit, 1, 60);
                     }
                 }
-                
+
                 if (frameLimitNeedsUpdate)
                 {
                     uvAnimationParametersFrameLimitProp.vectorValue = new Vector2(frameLimitEnabled ? 1.0f : 0.0f, (float)frameLimit);

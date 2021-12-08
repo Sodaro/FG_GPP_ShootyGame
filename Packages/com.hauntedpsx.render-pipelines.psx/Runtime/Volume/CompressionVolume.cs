@@ -18,7 +18,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class CompressionModeParameter : VolumeParameter<CompressionMode>
         {
             public CompressionModeParameter(CompressionMode value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         [Serializable]
@@ -36,7 +36,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public sealed class CompressionColorspaceParameter : VolumeParameter<CompressionColorspace>
         {
             public CompressionColorspaceParameter(CompressionColorspace value, bool overrideState = false)
-                : base(value, overrideState) {}
+                : base(value, overrideState) { }
         }
 
         public BoolParameter isEnabled = new BoolParameter(false);

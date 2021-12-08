@@ -1,17 +1,15 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Experimental.Rendering;
 using System.Collections.Generic;
-using UnityEditor;
-using System.ComponentModel;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace HauntedPSX.RenderPipelines.PSX.Runtime
 {
     public partial class PSXRenderPipeline : UnityEngine.Rendering.RenderPipeline
     {
         readonly PSXRenderPipelineAsset m_Asset;
-        public PSXRenderPipelineAsset asset { get { return m_Asset; }}
+        public PSXRenderPipelineAsset asset { get { return m_Asset; } }
 
         internal const PerObjectData k_RendererConfigurationBakedLighting = PerObjectData.LightProbe | PerObjectData.Lightmaps | PerObjectData.LightProbeProxyVolume;
         internal const PerObjectData k_RendererConfigurationBakedLightingWithShadowMask = k_RendererConfigurationBakedLighting | PerObjectData.OcclusionProbe | PerObjectData.OcclusionProbeProxyVolume | PerObjectData.ShadowMask;
@@ -27,7 +25,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         int frameCount;
 
         public static PSXRenderPipeline instance = null;
-        
+
         internal PSXRenderPipeline(PSXRenderPipelineAsset asset)
         {
             instance = this;
@@ -98,7 +96,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 if (isPSXQualityEnabled && volumeSettings.isFrameLimitEnabled.value)
                 {
                     QualitySettings.vSyncCount = 0; // VSync must be disabled
-                    Application.targetFrameRate = volumeSettings.frameLimit.value;                
+                    Application.targetFrameRate = volumeSettings.frameLimit.value;
                 }
                 else
                 {
@@ -117,7 +115,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 {
                     rasterizationWidth = Mathf.Min(rasterizationWidth, volumeSettings.targetRasterizationResolutionWidth.value);
                     rasterizationHeight = Mathf.Min(rasterizationHeight, volumeSettings.targetRasterizationResolutionHeight.value);
-                    
+
                     // Only render locked aspect ratio in main game view.
                     // Force scene view to render with free aspect ratio so that users edit area is not cropped.
                     // This also works around an issue with the aspect ratio discrepancy between locked mode, and
@@ -307,7 +305,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                     PushPreMainParameters(camera, cmd);
                     context.ExecuteCommandBuffer(cmd);
                     cmd.Release();
-                    
+
                     DrawMainOpaque(context, camera, ref cullingResults);
                     DrawMainTransparent(context, camera, ref cullingResults);
 
@@ -341,7 +339,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
                     TryDrawAccumulationMotionBlurFinalBlit(psxCamera, cmd, camera.targetTexture, copyColorRespectFlipYMaterial);
                 }
-                
+
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Release();
                 context.Submit();
@@ -383,7 +381,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
         static bool IsMainGameView(Camera camera)
         {
-            return camera.cameraType == CameraType.Game; 
+            return camera.cameraType == CameraType.Game;
         }
 
         static Color ComputeClearColorFromVolume()
@@ -655,7 +653,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 {
                     cmd.SetGlobalVector(PSXShaderIDs._PrecisionGeometry, Vector4.zero);
                 }
-                
+
                 int precisionColorIndex = Mathf.FloorToInt(volumeSettings.color.value * 7.0f + 0.5f);
                 float precisionChromaBit = volumeSettings.chroma.value;
                 Vector3 precisionColor = Vector3.zero; // Silence the compiler warnings.
@@ -720,7 +718,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 if (!volumeSettings) volumeSettings = FogVolume.@default;
 
                 Vector4 fogDistanceScaleBias = new Vector4(
-                    1.0f / (volumeSettings.distanceMax.value - volumeSettings.distanceMin.value), 
+                    1.0f / (volumeSettings.distanceMax.value - volumeSettings.distanceMin.value),
                     -volumeSettings.distanceMin.value / (volumeSettings.distanceMax.value - volumeSettings.distanceMin.value),
                     -1.0f / (volumeSettings.heightMax.value - volumeSettings.heightMin.value),
                     volumeSettings.heightMax.value / (volumeSettings.heightMax.value - volumeSettings.heightMin.value)
@@ -787,73 +785,73 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 switch (volumeSettings.colorLUTMode.value)
                 {
                     case FogVolume.FogColorLUTMode.Disabled:
-                    {
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, Texture2D.whiteTexture);
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, whiteCubemap);
+                        {
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, Texture2D.whiteTexture);
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, whiteCubemap);
 
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, Vector3.zero);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, Vector3.zero);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, Vector3.zero);
 
-                        cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
-                        break;
-                    }
+                            cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
+                            break;
+                        }
 
                     case FogVolume.FogColorLUTMode.Texture2DDistanceAndHeight:
-                    {
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, volumeSettings.colorLUTTexture.value);
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, whiteCubemap);
+                        {
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, volumeSettings.colorLUTTexture.value);
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, whiteCubemap);
 
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, Vector3.zero);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, Vector3.zero);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, Vector3.zero);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, Vector3.zero);
 
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
-                        cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
-                        break;
-                    }
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
+                            cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
+                            break;
+                        }
 
                     case FogVolume.FogColorLUTMode.TextureCube:
-                    {
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, Texture2D.whiteTexture);
-                        cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, volumeSettings.colorLUTTexture.value);
+                        {
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTexture2D, Texture2D.whiteTexture);
+                            cmd.SetGlobalTexture(PSXShaderIDs._FogColorLUTTextureCube, volumeSettings.colorLUTTexture.value);
 
-                        Quaternion cubemapRotation = Quaternion.Euler(volumeSettings.colorLUTRotationDegrees.value);
-                        Vector3 cubemapRotationTangent = cubemapRotation * Vector3.right;
-                        Vector3 cubemapRotationBitangent = cubemapRotation * Vector3.up;
-                        Vector3 cubemapRotationNormal = cubemapRotation * Vector3.forward;
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, cubemapRotationTangent);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, cubemapRotationBitangent);
-                        cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, cubemapRotationNormal);
+                            Quaternion cubemapRotation = Quaternion.Euler(volumeSettings.colorLUTRotationDegrees.value);
+                            Vector3 cubemapRotationTangent = cubemapRotation * Vector3.right;
+                            Vector3 cubemapRotationBitangent = cubemapRotation * Vector3.up;
+                            Vector3 cubemapRotationNormal = cubemapRotation * Vector3.forward;
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationTangent, cubemapRotationTangent);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationBitangent, cubemapRotationBitangent);
+                            cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTRotationNormal, cubemapRotationNormal);
 
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
-                        cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
-                        cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
-                        break;
-                    }
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_DISABLED);
+                            cmd.DisableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURE2D_DISTANCE_AND_HEIGHT);
+                            cmd.EnableShaderKeyword(PSXShaderKeywords.s_FOG_COLOR_LUT_MODE_TEXTURECUBE);
+                            break;
+                        }
 
                     default:
-                    {
-                        Debug.AssertFormat(false, "Encountered unsupported FogColorLUTMode {0} in Volume", volumeSettings.colorLUTMode.value);
-                        break;
-                    }
+                        {
+                            Debug.AssertFormat(false, "Encountered unsupported FogColorLUTMode {0} in Volume", volumeSettings.colorLUTMode.value);
+                            break;
+                        }
                 }
 
                 cmd.SetGlobalVector(PSXShaderIDs._FogColorLUTWeight, new Vector2(volumeSettings.colorLUTWeight.value, volumeSettings.colorLUTWeightLayer1.value));
 
-                bool isAdditionalLayerEnabled = volumeSettings.isAdditionalLayerEnabled.value; 
+                bool isAdditionalLayerEnabled = volumeSettings.isAdditionalLayerEnabled.value;
                 cmd.SetGlobalInt(PSXShaderIDs._FogIsAdditionalLayerEnabled, isAdditionalLayerEnabled ? 1 : 0);
                 if (isAdditionalLayerEnabled)
                 {
                     int fogFalloffModeLayer1 = (int)volumeSettings.fogFalloffModeLayer1.value;
                     cmd.SetGlobalInt(PSXShaderIDs._FogFalloffModeLayer1, fogFalloffModeLayer1);
                     cmd.SetGlobalVector(PSXShaderIDs._FogColorLayer1, new Vector4(volumeSettings.colorLayer1.value.r, volumeSettings.colorLayer1.value.g, volumeSettings.colorLayer1.value.b, volumeSettings.colorLayer1.value.a));
-                    
+
                     Vector4 fogDistanceScaleBiasLayer1 = new Vector4(
-                        1.0f / (volumeSettings.distanceMaxLayer1.value - volumeSettings.distanceMinLayer1.value), 
+                        1.0f / (volumeSettings.distanceMaxLayer1.value - volumeSettings.distanceMinLayer1.value),
                         -volumeSettings.distanceMinLayer1.value / (volumeSettings.distanceMaxLayer1.value - volumeSettings.distanceMinLayer1.value),
                         -1.0f / (volumeSettings.heightMaxLayer1.value - volumeSettings.heightMinLayer1.value),
                         volumeSettings.heightMaxLayer1.value / (volumeSettings.heightMaxLayer1.value - volumeSettings.heightMinLayer1.value)
@@ -903,10 +901,10 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
 
                 cmd.SetGlobalVector(PSXShaderIDs._WorldSpaceCameraPos, camera.transform.position);
-                
+
                 float time = GetAnimatedMaterialsTime(camera);
                 cmd.SetGlobalVector(PSXShaderIDs._Time, new Vector4(time / 20.0f, time, time * 2.0f, time * 3.0f));
-            
+
                 Texture2D alphaClippingDitherTex = GetAlphaClippingDitherTexFromAssetAndFrame(asset, (uint)Time.frameCount);
                 cmd.SetGlobalTexture(PSXShaderIDs._AlphaClippingDitherTexture, alphaClippingDitherTex);
                 cmd.SetGlobalVector(PSXShaderIDs._AlphaClippingDitherSize, new Vector4(
@@ -930,7 +928,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 {
                     Shader.EnableKeyword(PSXShaderKeywords.s_OUTPUT_LDR);
                 }
-            }  
+            }
         }
 
         static void PushGlobalPostProcessingParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset, RTHandle rasterizationRT, int rasterizationWidth, int rasterizationHeight, Vector4 cameraAspectModeUVScaleBias)
@@ -960,7 +958,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                     cameraAspectModeUVScaleBiasWithRTScale.z *= scale.x;
                     cameraAspectModeUVScaleBiasWithRTScale.w *= scale.y;
                 }
-                
+
                 cmd.SetGlobalInt(PSXShaderIDs._FlipY, flipY ? 1 : 0);
                 cmd.SetGlobalVector(PSXShaderIDs._CameraAspectModeUVScaleBias, cameraAspectModeUVScaleBiasWithRTScale);
                 cmd.SetGlobalVector(PSXShaderIDs._ScreenSize, new Vector4(camera.pixelWidth, camera.pixelHeight, 1.0f / (float)camera.pixelWidth, 1.0f / (float)camera.pixelHeight));
@@ -971,11 +969,11 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 Texture2D whiteNoiseTexture = GetWhiteNoise1024RGBTexFromAssetAndFrame(asset, (uint)Time.frameCount);
                 cmd.SetGlobalTexture(PSXShaderIDs._WhiteNoiseTexture, whiteNoiseTexture);
                 cmd.SetGlobalVector(PSXShaderIDs._WhiteNoiseSize, new Vector4(whiteNoiseTexture.width, whiteNoiseTexture.height, 1.0f / (float)whiteNoiseTexture.width, 1.0f / (float)whiteNoiseTexture.height));
-                
+
                 Texture2D blueNoiseTexture = GetBlueNoise16RGBTexFromAssetAndFrame(asset, (uint)Time.frameCount);
                 cmd.SetGlobalTexture(PSXShaderIDs._BlueNoiseTexture, blueNoiseTexture);
                 cmd.SetGlobalVector(PSXShaderIDs._BlueNoiseSize, new Vector4(blueNoiseTexture.width, blueNoiseTexture.height, 1.0f / (float)blueNoiseTexture.width, 1.0f / (float)blueNoiseTexture.height));
-                
+
                 float time = GetAnimatedMaterialsTime(camera);
                 cmd.SetGlobalVector(PSXShaderIDs._Time, new Vector4(time / 20.0f, time, time * 2.0f, time * 3.0f));
             }
@@ -1041,9 +1039,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         int[] FindCompressionKernels(PSXRenderPipelineAsset asset)
         {
             Debug.Assert(asset.renderPipelineResources.shaders.compressionCS, "Error: CompressionCS compute shader is unassigned in render pipeline resources. Assign a valid reference to this compute shader inside of render pipeline resources in the inspector.");
-            
+
             int[] kernels = new int[PSXComputeKernels.s_COMPRESSION.Length];
-            
+
             for (int i = 0, iLen = PSXComputeKernels.s_COMPRESSION.Length; i < iLen; ++i)
             {
                 kernels[i] = asset.renderPipelineResources.shaders.compressionCS.FindKernel(PSXComputeKernels.s_COMPRESSION[i]);
@@ -1084,7 +1082,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 );
 
                 cmd.SetComputeTextureParam(asset.renderPipelineResources.shaders.compressionCS, compressionKernel, PSXShaderIDs._CompressionSource, rasterizationRT);
-            
+
                 // TODO: Fix this when the rounding doesn't work.
                 cmd.DispatchCompute(asset.renderPipelineResources.shaders.compressionCS, compressionKernel, (rasterizationRT.width + 7) / 8, (rasterizationRT.height + 7) / 8, 1);
             }
@@ -1102,102 +1100,102 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 switch (skyMode)
                 {
                     case SkyVolume.SkyMode.FogColor:
-                    {
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
-                        break;
-                    }
+                        {
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
+                            break;
+                        }
                     case SkyVolume.SkyMode.BackgroundColor:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
+                            break;
+                        }
                     case SkyVolume.SkyMode.Skybox:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
+                            break;
+                        }
                     case SkyVolume.SkyMode.TiledLayers:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_FOG_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_BACKGROUND_COLOR);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_SKY_MODE_SKYBOX);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_SKY_MODE_TILED_LAYERS);
+                            break;
+                        }
                     default:
-                    {
-                        Debug.Assert(false, "Error: Encountered unsupported SkyMode.");
-                        break;
-                    }
+                        {
+                            Debug.Assert(false, "Error: Encountered unsupported SkyMode.");
+                            break;
+                        }
                 }
 
                 SkyVolume.TextureFilterMode textureFilterMode = volumeSettings.textureFilterMode.value;
                 switch (textureFilterMode)
                 {
                     case SkyVolume.TextureFilterMode.TextureImportSettings:
-                    {
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
-                        break;
-                    }
+                        {
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
+                            break;
+                        }
 
                     case SkyVolume.TextureFilterMode.Point:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
+                            break;
+                        }
 
                     case SkyVolume.TextureFilterMode.PointMipmaps:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
+                            break;
+                        }
 
                     case SkyVolume.TextureFilterMode.N64:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
+                            break;
+                        }
 
                     case SkyVolume.TextureFilterMode.N64Mipmaps:
-                    {
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
-                        skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
-                        skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
-                        break;
-                    }
+                        {
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_TEXTURE_IMPORT_SETTINGS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_POINT_MIPMAPS);
+                            skyMaterial.DisableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64);
+                            skyMaterial.EnableKeyword(PSXShaderKeywords.s_TEXTURE_FILTER_MODE_N64_MIPMAPS);
+                            break;
+                        }
 
                     default:
-                    {
-                        Debug.Assert(false, "Error: Encountered unsupported TextureFilterMode.");
-                        break;
-                    }
+                        {
+                            Debug.Assert(false, "Error: Encountered unsupported TextureFilterMode.");
+                            break;
+                        }
                 }
 
                 Color skyColor;
@@ -1471,7 +1469,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                     cmd.SetGlobalTexture(PSXShaderIDs._CRTGrateMaskTexture, Texture2D.whiteTexture);
                     cmd.SetGlobalVector(PSXShaderIDs._CRTGrateMaskSize, new Vector4(1.0f, 1.0f, 1.0f, 1.0f));
                 }
-                
+
 
                 cmd.SetGlobalVector(PSXShaderIDs._CRTGrateMaskScale, new Vector2(volumeSettings.grateMaskScale.value, 1.0f / volumeSettings.grateMaskScale.value));
 
@@ -1508,18 +1506,18 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 // 0.0 = none
                 // 1.0/8.0 = extreme
                 cmd.SetGlobalVector(PSXShaderIDs._CRTBarrelDistortion, new Vector2(volumeSettings.barrelDistortionX.value * 0.125f, volumeSettings.barrelDistortionY.value * 0.125f));
-            
+
                 cmd.SetGlobalFloat(PSXShaderIDs._CRTVignetteSquared, volumeSettings.vignette.value * volumeSettings.vignette.value);
             }
         }
 
         static void DrawSceneViewUI(Camera camera)
         {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             // Emit scene view UI
             if (camera.cameraType == CameraType.SceneView)
                 ScriptableRenderContext.EmitWorldGeometryForSceneView(camera);
-        #endif
+#endif
         }
 
         static void DrawBackgroundOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
@@ -1572,7 +1570,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             {
                 perObjectData = ComputePerObjectDataFromLightingVolume(camera)
             };
-            
+
             var filteringSettings = new FilteringSettings()
             {
                 renderQueueRange = range,
@@ -1596,7 +1594,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             {
                 perObjectData = ComputePerObjectDataFromLightingVolume(camera)
             };
-            
+
             var filteringSettings = new FilteringSettings()
             {
                 renderQueueRange = range,
@@ -1646,7 +1644,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
                 width = target.width;
                 height = target.height;
             }
-            
+
             cmd.SetViewport(new Rect(0.0f, 0.0f, width, height));
         }
 
@@ -1715,17 +1713,17 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
         static void DrawGizmos(ScriptableRenderContext context, Camera camera, GizmoSubset gizmoSubset)
         {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             if (UnityEditor.Handles.ShouldRenderGizmos())
                 context.DrawGizmos(camera, gizmoSubset);
-        #endif
+#endif
         }
 
         public static bool IsComputeShaderSupportedPlatform()
         {
-            if(!SystemInfo.supportsComputeShaders) { return false; }
+            if (!SystemInfo.supportsComputeShaders) { return false; }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.BuildTarget buildTarget = UnityEditor.EditorUserBuildSettings.activeBuildTarget;
 
             if (buildTarget == UnityEditor.BuildTarget.StandaloneWindows ||
@@ -1745,7 +1743,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             {
                 return false;
             }
-        #else
+#else
             if (Application.platform == RuntimePlatform.WindowsPlayer ||
                 Application.platform == RuntimePlatform.OSXPlayer ||
                 Application.platform == RuntimePlatform.LinuxPlayer ||
@@ -1760,7 +1758,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             {
                 return false;
             }
-        #endif
+#endif
         }
 
         public static RenderTextureFormat GetFrameBufferRenderTextureFormatHDR(out bool hdrIsSupported)
