@@ -8,14 +8,14 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(CameraVolume))]
     public class CameraVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_IsFrameLimitEnabled;
-        SerializedDataParameter m_FrameLimit;
-        SerializedDataParameter m_AspectMode;
-        SerializedDataParameter m_TargetRasterizationResolutionWidth;
-        SerializedDataParameter m_TargetRasterizationResolutionHeight;
-        SerializedDataParameter m_IsDepthBufferEnabled;
-        SerializedDataParameter m_IsClearDepthAfterBackgroundEnabled;
-        SerializedDataParameter m_IsClearDepthBeforeUIEnabled;
+        private SerializedDataParameter m_IsFrameLimitEnabled;
+        private SerializedDataParameter m_FrameLimit;
+        private SerializedDataParameter m_AspectMode;
+        private SerializedDataParameter m_TargetRasterizationResolutionWidth;
+        private SerializedDataParameter m_TargetRasterizationResolutionHeight;
+        private SerializedDataParameter m_IsDepthBufferEnabled;
+        private SerializedDataParameter m_IsClearDepthAfterBackgroundEnabled;
+        private SerializedDataParameter m_IsClearDepthBeforeUIEnabled;
 
         public override void OnEnable()
         {

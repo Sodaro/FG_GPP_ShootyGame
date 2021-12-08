@@ -10,20 +10,19 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
     {
         // Holds light direction for directional lights or position for punctual lights.
         // When w is set to 1.0, it means it's a punctual light.
-        Vector4 k_DefaultLightPosition = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-        Vector4 k_DefaultLightColor = Color.black;
+        private Vector4 k_DefaultLightPosition = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+        private Vector4 k_DefaultLightColor = Color.black;
 
         // Default light attenuation is setup in a particular way that it causes
         // directional lights to return 1.0 for both distance and angle attenuation
-        Vector4 k_DefaultLightAttenuation = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-        Vector4 k_DefaultLightSpotDirection = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-        Vector4 k_DefaultLightsProbeChannel = new Vector4(-1.0f, 1.0f, 0.0f, 0.0f);
-
-        Vector4[] m_AdditionalLightPositions;
-        Vector4[] m_AdditionalLightColors;
-        Vector4[] m_AdditionalLightAttenuations;
-        Vector4[] m_AdditionalLightSpotDirections;
-        Vector4[] m_AdditionalLightOcclusionProbeChannels;
+        private Vector4 k_DefaultLightAttenuation = new Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+        private Vector4 k_DefaultLightSpotDirection = new Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+        private Vector4 k_DefaultLightsProbeChannel = new Vector4(-1.0f, 1.0f, 0.0f, 0.0f);
+        private Vector4[] m_AdditionalLightPositions;
+        private Vector4[] m_AdditionalLightColors;
+        private Vector4[] m_AdditionalLightAttenuations;
+        private Vector4[] m_AdditionalLightSpotDirections;
+        private Vector4[] m_AdditionalLightOcclusionProbeChannels;
 
         public enum MixedLightingSetup
         {
@@ -32,21 +31,21 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             Subtractive,
         };
 
-        MixedLightingSetup m_MixedLightingSetup;
+        private MixedLightingSetup m_MixedLightingSetup;
 
-        void AllocateLighting()
+        private void AllocateLighting()
         {
             // Set callback for converting light sources from HPSXRP representation to lightmapper representation.
             Lightmapping.SetDelegate(lightsDelegate);
         }
 
-        void DisposeLighting()
+        private void DisposeLighting()
         {
             // Clear callback for converting light sources from HPSXRP representation to lightmapper representation.
             Lightmapping.ResetDelegate();
         }
 
-        void PushDynamicLightingParameters(Camera camera, CommandBuffer cmd, ref CullingResults cullingResults)
+        private void PushDynamicLightingParameters(Camera camera, CommandBuffer cmd, ref CullingResults cullingResults)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushDynamicLightingParameters))
             {
@@ -112,12 +111,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        bool IsLightLayerVisible(int lightLayer, int cullingMask)
+        private bool IsLightLayerVisible(int lightLayer, int cullingMask)
         {
             return ((1 << lightLayer) & cullingMask) > 0;
         }
 
-        void EnsureAdditionalLightData(int capacity)
+        private void EnsureAdditionalLightData(int capacity)
         {
             Debug.Assert(capacity > 0);
 
@@ -131,7 +130,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        int SetupPerObjectLightIndices(Camera camera, ref CullingResults cullingResults, int dynamicLightsMaxCount)
+        private int SetupPerObjectLightIndices(Camera camera, ref CullingResults cullingResults, int dynamicLightsMaxCount)
         {
             Debug.Assert(dynamicLightsMaxCount > 0);
 
@@ -175,7 +174,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return additionalLightsCount;
         }
 
-        void InitializeLightConstants(NativeArray<VisibleLight> lights, int lightIndex, out Vector4 lightPos, out Vector4 lightColor, out Vector4 lightAttenuation, out Vector4 lightSpotDir, out Vector4 lightOcclusionProbeChannel)
+        private void InitializeLightConstants(NativeArray<VisibleLight> lights, int lightIndex, out Vector4 lightPos, out Vector4 lightColor, out Vector4 lightAttenuation, out Vector4 lightSpotDir, out Vector4 lightOcclusionProbeChannel)
         {
             lightPos = k_DefaultLightPosition;
             lightColor = k_DefaultLightColor;
@@ -286,7 +285,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
         // Handle conversion from HPSXRP representation of light sources to lightmapper's representation of light sources here.
         // This is based on the approach that Universal and HDRP take.
-        static Lightmapping.RequestLightsDelegate lightsDelegate = (Light[] requests, NativeArray<GlobalIllumination.LightDataGI> lightsOutput) =>
+        private static Lightmapping.RequestLightsDelegate lightsDelegate = (Light[] requests, NativeArray<GlobalIllumination.LightDataGI> lightsOutput) =>
         {
             // Editor only.
 #if UNITY_EDITOR

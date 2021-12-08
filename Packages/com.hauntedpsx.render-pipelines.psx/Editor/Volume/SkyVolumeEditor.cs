@@ -10,27 +10,25 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(SkyVolume))]
     public class SkyVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_SkyMode;
-        SerializedDataParameter m_FramebufferDitherWeight;
-        SerializedDataParameter m_SkyRotation;
-        SerializedDataParameter m_TextureFilterMode;
-
-        SerializedDataParameter m_SkyboxTexture;
-
-        SerializedDataParameter m_TiledLayersSkyHeightScale;
-        SerializedDataParameter m_TiledLayersSkyHorizonOffset;
-        SerializedDataParameter m_TiledLayersSkyColorLayer0;
-        SerializedDataParameter m_TiledLayersSkyTextureLayer0;
-        SerializedDataParameter m_TiledLayersSkyTextureScaleOffsetLayer0;
-        SerializedDataParameter m_TiledLayersSkyRotationLayer0;
-        SerializedDataParameter m_TiledLayersSkyScrollScaleLayer0;
-        SerializedDataParameter m_TiledLayersSkyScrollRotationLayer0;
-        SerializedDataParameter m_TiledLayersSkyColorLayer1;
-        SerializedDataParameter m_TiledLayersSkyTextureLayer1;
-        SerializedDataParameter m_TiledLayersSkyTextureScaleOffsetLayer1;
-        SerializedDataParameter m_TiledLayersSkyRotationLayer1;
-        SerializedDataParameter m_TiledLayersSkyScrollScaleLayer1;
-        SerializedDataParameter m_TiledLayersSkyScrollRotationLayer1;
+        private SerializedDataParameter m_SkyMode;
+        private SerializedDataParameter m_FramebufferDitherWeight;
+        private SerializedDataParameter m_SkyRotation;
+        private SerializedDataParameter m_TextureFilterMode;
+        private SerializedDataParameter m_SkyboxTexture;
+        private SerializedDataParameter m_TiledLayersSkyHeightScale;
+        private SerializedDataParameter m_TiledLayersSkyHorizonOffset;
+        private SerializedDataParameter m_TiledLayersSkyColorLayer0;
+        private SerializedDataParameter m_TiledLayersSkyTextureLayer0;
+        private SerializedDataParameter m_TiledLayersSkyTextureScaleOffsetLayer0;
+        private SerializedDataParameter m_TiledLayersSkyRotationLayer0;
+        private SerializedDataParameter m_TiledLayersSkyScrollScaleLayer0;
+        private SerializedDataParameter m_TiledLayersSkyScrollRotationLayer0;
+        private SerializedDataParameter m_TiledLayersSkyColorLayer1;
+        private SerializedDataParameter m_TiledLayersSkyTextureLayer1;
+        private SerializedDataParameter m_TiledLayersSkyTextureScaleOffsetLayer1;
+        private SerializedDataParameter m_TiledLayersSkyRotationLayer1;
+        private SerializedDataParameter m_TiledLayersSkyScrollScaleLayer1;
+        private SerializedDataParameter m_TiledLayersSkyScrollRotationLayer1;
 
         public override void OnEnable()
         {

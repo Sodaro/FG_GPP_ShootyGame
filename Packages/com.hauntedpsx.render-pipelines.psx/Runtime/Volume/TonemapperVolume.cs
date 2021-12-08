@@ -16,8 +16,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public ClampedFloatParameter crossTalk = new ClampedFloatParameter(0.394f, 0.0f, 1.0f);
         public ClampedFloatParameter saturation = new ClampedFloatParameter(0.0f, 0.0f, 1.0f);
         public ClampedFloatParameter crossTalkSaturation = new ClampedFloatParameter(0.039f, 1e-3f, 1.0f);
-
-        static TonemapperVolume s_Default = null;
+        private static TonemapperVolume s_Default = null;
         public static TonemapperVolume @default
         {
             get

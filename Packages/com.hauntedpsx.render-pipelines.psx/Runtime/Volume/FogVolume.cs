@@ -83,8 +83,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public BoolParameter heightFalloffMirroredLayer1 = new BoolParameter(false);
         public FloatParameter heightMinLayer1 = new FloatParameter(0.0f);
         public FloatParameter heightMaxLayer1 = new FloatParameter(10.0f);
-
-        static FogVolume s_Default = null;
+        private static FogVolume s_Default = null;
         public static FogVolume @default
         {
             get

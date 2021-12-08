@@ -13,8 +13,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public MinFloatParameter dynamicLightingMultiplier = new MinFloatParameter(1.0f, 0.0f);
         public ClampedIntParameter dynamicLightsMaxCount = new ClampedIntParameter(256, 1, 256);
         public ClampedIntParameter dynamicLightsMaxPerObjectCount = new ClampedIntParameter(4, 1, 8);
-
-        static LightingVolume s_Default = null;
+        private static LightingVolume s_Default = null;
         public static LightingVolume @default
         {
             get

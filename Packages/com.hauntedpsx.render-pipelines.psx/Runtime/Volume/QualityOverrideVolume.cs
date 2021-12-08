@@ -10,8 +10,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         // Default to PSX Quality Disabled so that prefab editing is easier
         // (most of the time you do not want to edit prefabs with low / pixelated / CRT settings on)
         public BoolParameter isPSXQualityEnabled = new BoolParameter(false);
-
-        static QualityOverrideVolume s_Default = null;
+        private static QualityOverrideVolume s_Default = null;
         public static QualityOverrideVolume @default
         {
             get

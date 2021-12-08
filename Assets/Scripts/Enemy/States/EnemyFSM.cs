@@ -23,13 +23,5 @@ public class EnemyFSM
 
         CurrentState.Update();
     }
-
-    public void FixedUpdate()
-    {
-        if (CurrentState == null)
-            return;
-
-        CurrentState.FixedUpdate();
-    }
     #endregion
 }

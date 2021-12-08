@@ -8,15 +8,15 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(TonemapperVolume))]
     public class TonemapperVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_IsEnabled;
-        SerializedDataParameter m_Contrast;
-        SerializedDataParameter m_Shoulder;
-        SerializedDataParameter m_GraypointIn;
-        SerializedDataParameter m_GraypointOut;
-        SerializedDataParameter m_Whitepoint;
-        SerializedDataParameter m_CrossTalk;
-        SerializedDataParameter m_Saturation;
-        SerializedDataParameter m_CrossTalkSaturation;
+        private SerializedDataParameter m_IsEnabled;
+        private SerializedDataParameter m_Contrast;
+        private SerializedDataParameter m_Shoulder;
+        private SerializedDataParameter m_GraypointIn;
+        private SerializedDataParameter m_GraypointOut;
+        private SerializedDataParameter m_Whitepoint;
+        private SerializedDataParameter m_CrossTalk;
+        private SerializedDataParameter m_Saturation;
+        private SerializedDataParameter m_CrossTalkSaturation;
 
         public override void OnEnable()
         {

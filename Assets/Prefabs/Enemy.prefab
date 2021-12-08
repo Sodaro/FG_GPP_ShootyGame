@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ragdoll: {fileID: 2194732227035750375}
+  _hostileSpeed: 15
+  _idleSpeed: 7
 --- !u!136 &1562051572311680035
 CapsuleCollider:
   m_ObjectHideFlags: 0

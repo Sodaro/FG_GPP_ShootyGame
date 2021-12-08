@@ -8,12 +8,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(LightingVolume))]
     public class LightingVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_LightingIsEnabled;
-        SerializedDataParameter m_BakedLightingMultipler;
-        SerializedDataParameter m_VertexColorLightingMultiplier;
-        SerializedDataParameter m_DynamicLightingMultiplier;
-        SerializedDataParameter m_DynamicLightsMaxCount;
-        SerializedDataParameter m_DynamicLightsMaxPerObjectCount;
+        private SerializedDataParameter m_LightingIsEnabled;
+        private SerializedDataParameter m_BakedLightingMultipler;
+        private SerializedDataParameter m_VertexColorLightingMultiplier;
+        private SerializedDataParameter m_DynamicLightingMultiplier;
+        private SerializedDataParameter m_DynamicLightsMaxCount;
+        private SerializedDataParameter m_DynamicLightsMaxPerObjectCount;
 
         public override void OnEnable()
         {

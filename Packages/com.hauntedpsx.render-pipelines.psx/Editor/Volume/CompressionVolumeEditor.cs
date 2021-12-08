@@ -8,12 +8,11 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(CompressionVolume))]
     public class CompressionVolumeEditor : VolumeComponentEditor
     {
-
-        SerializedDataParameter m_IsEnabled;
-        SerializedDataParameter m_Weight;
-        SerializedDataParameter m_Accuracy;
-        SerializedDataParameter m_Mode;
-        SerializedDataParameter m_Colorspace;
+        private SerializedDataParameter m_IsEnabled;
+        private SerializedDataParameter m_Weight;
+        private SerializedDataParameter m_Accuracy;
+        private SerializedDataParameter m_Mode;
+        private SerializedDataParameter m_Colorspace;
 
         public override void OnEnable()
         {

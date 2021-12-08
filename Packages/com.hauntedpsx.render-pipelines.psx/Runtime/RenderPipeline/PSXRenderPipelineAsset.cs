@@ -6,7 +6,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 {
     public partial class PSXRenderPipelineAsset : RenderPipelineAsset
     {
-        PSXRenderPipelineAsset()
+        private PSXRenderPipelineAsset()
         {
         }
 

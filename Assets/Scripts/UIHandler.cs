@@ -1,51 +1,68 @@
 using Observer;
 using System.Collections;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
     #region Serialized Fields
-    [SerializeField] private Image damageImage = null;
-    [SerializeField] private Image deathImage = null;
+    [SerializeField] private Image _effectImage = null;
+    [SerializeField] private Image _deathImage = null;
+    [SerializeField] private TMP_Text _healthText = null;
     #endregion
     #region Private Fields
     private delegate void OnFadeFinished();
-    private event OnFadeFinished onFadeFinished;
-    private Coroutine coroutine = null;
+    private event OnFadeFinished _onFadeFinished;
+    private Coroutine _coroutine = null;
     #endregion
     #region Private Methods
     private void OnDisable()
     {
-        ServiceLocator.Current.Get<EventHandler>().onPlayerDamageTaken -= ActivateDamagePanel;
-        ServiceLocator.Current.Get<EventHandler>().onPlayerDeath -= ActivateDeathPanel;
-    }
-    private void OnEnable()
-    {
-        ServiceLocator.Current.Get<EventHandler>().onPlayerDamageTaken += ActivateDamagePanel;
-        ServiceLocator.Current.Get<EventHandler>().onPlayerDeath += ActivateDeathPanel;
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerDamageTaken -= ActivateEffectPanel;
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerHeal -= ActivateEffectPanel;
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerDeath -= ActivateDeathPanel;
     }
 
-    private void ActivateDamagePanel()
+    private void OnEnable()
     {
-        if (coroutine == null)
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerDamageTaken += ActivateEffectPanel;
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerHeal += ActivateEffectPanel;
+        ServiceLocator.Instance.Get<EventHandler>().onPlayerDeath += ActivateDeathPanel;
+    }
+
+    private void UpdateHealthText(int newValue)
+    {
+        _healthText.text = newValue.ToString();
+    }
+
+    private void ActivateEffectPanel(int newHealth)
+    {
+        if (_coroutine == null)
         {
-            damageImage.gameObject.SetActive(true);
-            coroutine = StartCoroutine(FadeImage(damageImage, 0.5f, disableOnDone: true));
+            Color color = Color.black;
+            bool success = int.TryParse(_healthText.text, out int oldHealth);
+            if (success)
+            {
+                color = newHealth > oldHealth ? Color.cyan : Color.red;
+            }
+            UpdateHealthText(newHealth);
+            _effectImage.gameObject.SetActive(true);
+            _coroutine = StartCoroutine(FadeImage(_effectImage, color, 0.5f, disableOnDone: true));
         }
     }
 
     private void ActivateDeathPanel()
     {
-        deathImage.gameObject.SetActive(true);
-        onFadeFinished += ReloadScene;
-        coroutine = StartCoroutine(FadeImage(deathImage, 2f, fadeIn: true, disableOnDone: false));
+        _healthText.text = "0";
+        _deathImage.gameObject.SetActive(true);
+        _onFadeFinished += ReloadScene;
+        _coroutine = StartCoroutine(FadeImage(_deathImage, Color.black, 2f, fadeIn: true, disableOnDone: false));
     }
     private void ReloadScene()
     {
-        onFadeFinished -= ReloadScene;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        _onFadeFinished -= ReloadScene;
+        ServiceLocator.Instance.Get<SceneHandler>().RestartActiveScene();
     }
     private void SwapColors(ref Color c1, ref Color c2)
     {
@@ -54,11 +71,10 @@ public class UIHandler : MonoBehaviour
         c1 = temp;
     }
 
-    private IEnumerator FadeImage(Image image, float duration, bool fadeIn = false, bool disableOnDone = false)
+    private IEnumerator FadeImage(Image image, Color startColor, float duration, bool fadeIn = false, bool disableOnDone = false)
     {
         float f = 0;
-        Color startColor, endColor;
-        startColor = image.color;
+        Color endColor;
         endColor = startColor;
         endColor.a = 0;
 
@@ -79,9 +95,9 @@ public class UIHandler : MonoBehaviour
             image.gameObject.SetActive(false);
             image.color = startColor;
         }
-        coroutine = null;
-        if (onFadeFinished != null)
-            onFadeFinished.Invoke();
+        _coroutine = null;
+        if (_onFadeFinished != null)
+            _onFadeFinished.Invoke();
     }
 
     #endregion

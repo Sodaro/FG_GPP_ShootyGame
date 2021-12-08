@@ -34,8 +34,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public BoolParameter isDepthBufferEnabled = new BoolParameter(true);
         public BoolParameter isClearDepthAfterBackgroundEnabled = new BoolParameter(true);
         public BoolParameter isClearDepthBeforeUIEnabled = new BoolParameter(true);
-
-        static CameraVolume s_Default = null;
+        private static CameraVolume s_Default = null;
         public static CameraVolume @default
         {
             get

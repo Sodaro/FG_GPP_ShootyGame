@@ -8,22 +8,22 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(CathodeRayTubeVolume))]
     public class CathodeRayTubeVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_IsEnabled;
-        SerializedDataParameter m_Bloom;
-        SerializedDataParameter m_GrateMaskMode;
-        SerializedDataParameter m_GrateMaskTexture;
-        SerializedDataParameter m_GrateMaskScale;
-        SerializedDataParameter m_ScanlineSharpness;
-        SerializedDataParameter m_ImageSharpness;
-        SerializedDataParameter m_BloomSharpnessX;
-        SerializedDataParameter m_BloomSharpnessY;
-        SerializedDataParameter m_NoiseIntensity;
-        SerializedDataParameter m_NoiseSaturation;
-        SerializedDataParameter m_GrateMaskIntensityMin;
-        SerializedDataParameter m_GrateMaskIntensityMax;
-        SerializedDataParameter m_BarrelDistortionX;
-        SerializedDataParameter m_BarrelDistortionY;
-        SerializedDataParameter m_Vignette;
+        private SerializedDataParameter m_IsEnabled;
+        private SerializedDataParameter m_Bloom;
+        private SerializedDataParameter m_GrateMaskMode;
+        private SerializedDataParameter m_GrateMaskTexture;
+        private SerializedDataParameter m_GrateMaskScale;
+        private SerializedDataParameter m_ScanlineSharpness;
+        private SerializedDataParameter m_ImageSharpness;
+        private SerializedDataParameter m_BloomSharpnessX;
+        private SerializedDataParameter m_BloomSharpnessY;
+        private SerializedDataParameter m_NoiseIntensity;
+        private SerializedDataParameter m_NoiseSaturation;
+        private SerializedDataParameter m_GrateMaskIntensityMin;
+        private SerializedDataParameter m_GrateMaskIntensityMax;
+        private SerializedDataParameter m_BarrelDistortionX;
+        private SerializedDataParameter m_BarrelDistortionY;
+        private SerializedDataParameter m_Vignette;
 
         public override void OnEnable()
         {

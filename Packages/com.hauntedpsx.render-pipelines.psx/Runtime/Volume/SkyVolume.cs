@@ -63,9 +63,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public FloatParameter tiledLayersSkyRotationLayer1 = new FloatParameter(0.0f);
         public Vector2Parameter tiledLayersSkyScrollScaleLayer1 = new Vector2Parameter(new Vector2(-0.25f, -0.25f));
         public FloatParameter tiledLayersSkyScrollRotationLayer1 = new FloatParameter(0.0f);
-
-
-        static SkyVolume s_Default = null;
+        private static SkyVolume s_Default = null;
         public static SkyVolume @default
         {
             get

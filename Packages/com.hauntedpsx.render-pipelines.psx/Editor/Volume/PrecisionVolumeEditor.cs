@@ -8,18 +8,18 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(PrecisionVolume))]
     public class PrecisionVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_GeometryEnabled;
-        SerializedDataParameter m_Geometry;
-        SerializedDataParameter m_GeometryPushbackEnabled;
-        SerializedDataParameter m_GeometryPushbackMinMax;
-        SerializedDataParameter m_Color;
-        SerializedDataParameter m_Chroma;
-        SerializedDataParameter m_Alpha;
-        SerializedDataParameter m_AffineTextureWarping;
-        SerializedDataParameter m_FramebufferDither;
-        SerializedDataParameter m_DitherSize;
-        SerializedDataParameter m_DrawDistanceFalloffMode;
-        SerializedDataParameter m_DrawDistance;
+        private SerializedDataParameter m_GeometryEnabled;
+        private SerializedDataParameter m_Geometry;
+        private SerializedDataParameter m_GeometryPushbackEnabled;
+        private SerializedDataParameter m_GeometryPushbackMinMax;
+        private SerializedDataParameter m_Color;
+        private SerializedDataParameter m_Chroma;
+        private SerializedDataParameter m_Alpha;
+        private SerializedDataParameter m_AffineTextureWarping;
+        private SerializedDataParameter m_FramebufferDither;
+        private SerializedDataParameter m_DitherSize;
+        private SerializedDataParameter m_DrawDistanceFalloffMode;
+        private SerializedDataParameter m_DrawDistance;
 
         public override void OnEnable()
         {

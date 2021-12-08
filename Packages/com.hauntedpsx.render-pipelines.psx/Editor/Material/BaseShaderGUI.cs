@@ -95,11 +95,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
 
         // Header foldout states
 
-        bool m_SurfaceOptionsFoldout;
-
-        bool m_SurfaceInputsFoldout;
-
-        bool m_AdvancedFoldout;
+        private bool m_SurfaceOptionsFoldout;
+        private bool m_SurfaceInputsFoldout;
+        private bool m_AdvancedFoldout;
 
 
         public abstract void MaterialChanged(Material material);

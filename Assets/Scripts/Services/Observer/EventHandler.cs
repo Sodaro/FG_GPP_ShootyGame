@@ -3,8 +3,8 @@ namespace Observer
     public class EventHandler : IService
     {
         public delegate void OnPlayerDeath();
-        public delegate void OnPlayerHeal();
-        public delegate void OnPlayerDamageTaken();
+        public delegate void OnPlayerHeal(int newAmount);
+        public delegate void OnPlayerDamageTaken(int newAmount);
         public delegate void OnPlayerJump();
         public delegate void OnEnemyDeath();
 
@@ -30,19 +30,19 @@ namespace Observer
             }
         }
 
-        public void RaiseOnPlayerHeal()
+        public void RaiseOnPlayerHeal(int newAmount)
         {
             if (onPlayerHeal != null)
             {
-                onPlayerHeal.Invoke();
+                onPlayerHeal.Invoke(newAmount);
             }
         }
 
-        public void RaiseOnPlayerDamageTaken()
+        public void RaiseOnPlayerDamageTaken(int newAmount)
         {
             if (onPlayerDamageTaken != null)
             {
-                onPlayerDamageTaken.Invoke();
+                onPlayerDamageTaken.Invoke(newAmount);
             }
 
         }
@@ -53,11 +53,6 @@ namespace Observer
             {
                 onPlayerDeath.Invoke();
             }
-        }
-
-        void IService.Initialize()
-        {
-
         }
     }
 }

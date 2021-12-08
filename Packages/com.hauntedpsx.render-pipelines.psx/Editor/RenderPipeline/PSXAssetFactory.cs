@@ -7,18 +7,18 @@ using UnityEngine.Rendering;
 namespace HauntedPSX.RenderPipelines.PSX.Editor
 {
     [ExecuteInEditMode]
-    static class PSXRenderPipelineAssetFactory
+    internal static class PSXRenderPipelineAssetFactory
     {
-        static readonly string s_PackagePath = "Packages/com.hauntedpsx.render-pipelines.psx/";
+        private static readonly string s_PackagePath = "Packages/com.hauntedpsx.render-pipelines.psx/";
 
         [MenuItem("HauntedPS1/Create HauntedPS1 Render Pipeline Asset", priority = CoreUtils.assetCreateMenuPriority1)]
-        static void CreatePSXRenderPipelineAsset()
+        private static void CreatePSXRenderPipelineAsset()
         {
             var icon = EditorGUIUtility.FindTexture("ScriptableObject Icon");
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<DoCreateNewAssetPSXRenderPipelineAsset>(), "PSXRenderPipelineAsset.asset", icon, null);
         }
 
-        class DoCreateNewAssetPSXRenderPipelineAsset : UnityEditor.ProjectWindowCallback.EndNameEditAction
+        private class DoCreateNewAssetPSXRenderPipelineAsset : UnityEditor.ProjectWindowCallback.EndNameEditAction
         {
             public override void Action(int instanceId, string pathName, string resourceFile)
             {
@@ -33,13 +33,13 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         }
 
         [MenuItem("HauntedPS1/Create HauntedPS1 Render Pipeline Resources", priority = CoreUtils.assetCreateMenuPriority1)]
-        static void CreatePSXRenderPipelineResources()
+        private static void CreatePSXRenderPipelineResources()
         {
             var icon = EditorGUIUtility.FindTexture("ScriptableObject Icon");
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, ScriptableObject.CreateInstance<DoCreateNewAssetPSXRenderPipelineResources>(), "PSXRenderPipelineResources.asset", icon, null);
         }
 
-        class DoCreateNewAssetPSXRenderPipelineResources : UnityEditor.ProjectWindowCallback.EndNameEditAction
+        private class DoCreateNewAssetPSXRenderPipelineResources : UnityEditor.ProjectWindowCallback.EndNameEditAction
         {
             public override void Action(int instanceId, string pathName, string resourceFile)
             {

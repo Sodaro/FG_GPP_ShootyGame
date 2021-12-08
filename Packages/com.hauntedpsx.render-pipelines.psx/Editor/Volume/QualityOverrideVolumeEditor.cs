@@ -8,7 +8,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(QualityOverrideVolume))]
     public class QualityOverrideVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_IsPSXQualityEnabled;
+        private SerializedDataParameter m_IsPSXQualityEnabled;
 
         public override void OnEnable()
         {

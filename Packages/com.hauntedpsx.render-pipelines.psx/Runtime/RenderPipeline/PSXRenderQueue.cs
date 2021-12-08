@@ -11,7 +11,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
     public static class PSXRenderQueue
     {
-        const int k_TransparentPriorityQueueRange = 100;
+        private const int k_TransparentPriorityQueueRange = 100;
 
         public enum Priority
         {

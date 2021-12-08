@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerWeaponHandler : PlayerBaseComponent
 {
-    struct ShootArgs
+    private struct ShootArgs
     {
         public ShootArgs(Vector3 pos, Vector3 dir, float range, int mask)
         {
@@ -17,18 +17,20 @@ public class PlayerWeaponHandler : PlayerBaseComponent
         public int mask;
     };
     #region Serialized Fields
-    [SerializeField] GameObject _muzzleFlashObject = null;
-    [SerializeField] Transform _muzzleTransform = null;
+    [SerializeField] private GameObject _muzzleFlashObject = null;
+    [SerializeField] private Transform _muzzleTransform = null;
     #endregion
 
     #region Private Fields
     private AudioSource _weaponAudioSource;
     private Transform _cameraTransform;
-    private PlayerInput _input;
 
     private const float MUZZLE_EFFECT_DURATION = 0.1f;
 
     private ShootArgs _unhandledShot;
+
+    private float _timeBetweenShots = 0.5f;
+    private float _shootTimer = 0f;
 
     private float _muzzleTimer = 0;
     private float _range = 100f;
@@ -38,50 +40,23 @@ public class PlayerWeaponHandler : PlayerBaseComponent
     #endregion
 
     #region Public Methods
-    public override void Initialize(PlayerBaseComponent component)
+    public override void Initialize()
     {
         _weaponAudioSource = GetComponent<AudioSource>();
         _entityLayerMask = 1 << gameObject.layer;
         _cameraTransform = Camera.main.transform;
-        _input = (PlayerInput)component;
     }
     public override void OnUpdate(float delta)
     {
-        ////check timer to toggle flash effect off 
-        //if (_muzzleTimer > 0)
-        //{
-        //    _muzzleTimer -= delta;
-        //}
-        //else
-        //{
-        //    if (_muzzleFlashObject.activeInHierarchy)
-        //    {
-        //        _muzzleFlashObject.SetActive(false);
-        //    }
-        //}
+        if (_shootTimer > 0f)
+        {
+            _shootTimer -= delta;
+        }
 
-        //if (_input.Inputs.shootWasPressed)
-        //{
-        //    Vector3 startPos, endPos;
-        //    startPos = _muzzleTransform.position;
-        //    endPos = _cameraTransform.position + _cameraTransform.forward * _range;
-
-        //    dirtyFlag = true;
-        //    _unhandledShot = new ShootArgs(_cameraTransform.position, _cameraTransform.forward, _range, _entityLayerMask);
-
-        //    _muzzleTimer = MUZZLE_EFFECT_DURATION;
-        //    _muzzleFlashObject.SetActive(true);
-        //    _weaponAudioSource.PlaySoundRandomPitch(0.75f, 1.1f);
-        //    LinePool.Instance.Get().SetLinePositions(startPos, endPos);
-        //}
-    }
-
-    public override void OnFixedUpdate(float fixedDelta)
-    {
         //check timer to toggle flash effect off 
         if (_muzzleTimer > 0)
         {
-            _muzzleTimer -= fixedDelta;
+            _muzzleTimer -= delta;
         }
         else
         {
@@ -90,14 +65,16 @@ public class PlayerWeaponHandler : PlayerBaseComponent
                 _muzzleFlashObject.SetActive(false);
             }
         }
+    }
 
-        if (_input.Inputs.shootWasPressed)
+    public override void OnFixedUpdate(float fixedDelta, in InputHandler.InputVars inputs)
+    {
+        if (inputs.shootWasPressed && _shootTimer <= 0)
         {
             Vector3 startPos, endPos;
             startPos = _muzzleTransform.position;
             endPos = _cameraTransform.position + _cameraTransform.forward * _range;
 
-            dirtyFlag = true;
             _unhandledShot = new ShootArgs(_cameraTransform.position, _cameraTransform.forward, _range, _entityLayerMask);
 
             _muzzleTimer = MUZZLE_EFFECT_DURATION;
@@ -106,14 +83,13 @@ public class PlayerWeaponHandler : PlayerBaseComponent
             LinePool.Instance.Get().SetLinePositions(startPos, endPos);
 
             HandleShot(_unhandledShot);
-            //dirtyFlag = false;
-
+            _shootTimer = _timeBetweenShots;
         }
     }
     #endregion
 
     #region Private Methods
-    private void HandleShot(ShootArgs args)
+    private void HandleShot(in ShootArgs args)
     {
         if (Physics.Raycast(args.pos, args.dir, out RaycastHit hit, args.range, _entityLayerMask, QueryTriggerInteraction.Ignore))
         {
@@ -122,9 +98,9 @@ public class PlayerWeaponHandler : PlayerBaseComponent
             if (body == null || bodyParent == null)
                 return;
 
-            if (hit.collider.attachedRigidbody.transform.parent.TryGetComponent(out Enemy enemy))
+            if (hit.collider.attachedRigidbody.transform.parent.TryGetComponent(out IHealth entity))
             {
-                enemy.Kill((transform.position - hit.point).normalized);
+                entity.ReduceHealth(20f);
             }
         }
     }

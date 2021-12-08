@@ -9,7 +9,6 @@ public class PlayerPhysics : PlayerBaseComponent
     #endregion
 
     #region Private Fields
-    private PlayerInput _input;
     private Vector3 _velocity;
     private Vector3 _moveDirection;
     private bool _isStunned = false;
@@ -24,12 +23,11 @@ public class PlayerPhysics : PlayerBaseComponent
     {
         _isStunned = value;
     }
-    public override void Initialize(PlayerBaseComponent input)
+    public override void Initialize()
     {
-        _input = (PlayerInput)input;
         _layerMask = 1;
     }
-    public override void OnFixedUpdate(float fixedDelta)
+    public override void OnFixedUpdate(float fixedDelta, in InputHandler.InputVars inputs)
     {
         //just check x and z values to handle collisions, y is used for groundcheck
         _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1f, _layerMask, QueryTriggerInteraction.Ignore);
@@ -39,12 +37,12 @@ public class PlayerPhysics : PlayerBaseComponent
             _velocity.y = 0;
             if (_isStunned == false)
             {
-                float speed = _input.Inputs.sprintIsHeld ? _sprintSpeed : _moveSpeed;
-                Vector2 inputDir = _input.Inputs.moveInput;
+                float speed = inputs.sprintIsHeld ? _sprintSpeed : _moveSpeed;
+                Vector2 inputDir = inputs.moveInput;
                 _moveDirection = (inputDir.x * transform.right + inputDir.y * transform.forward).normalized;
                 Vector3 inputVelocity = _moveDirection * speed;
                 _velocity = new Vector3(inputVelocity.x, _velocity.y, inputVelocity.z);
-                if (_input.Inputs.jumpInput)
+                if (inputs.jumpInput)
                     HandleJump();
             }
         }

@@ -9,21 +9,21 @@ public class PlayerMouseLook : PlayerBaseComponent
     #region Private Fields
     private Transform _cameraTransform;
     private Transform _playerTransform;
-    private PlayerInput _input;
     #endregion
 
     #region Public Methods
-    public override void Initialize(PlayerBaseComponent playerInput)
+    public override void Initialize()
     {
-        _input = (PlayerInput)playerInput;
         _cameraTransform = Camera.main.transform;
         _playerTransform = transform;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public override void OnUpdate(float delta)
+    public override void OnUpdate(float delta, in InputHandler.InputVars inputs)
     {
-        Vector3 mouseInput = _input.Inputs.mouseInput;
+        Vector2 mouseInput = inputs.mouseInput;
+        if (mouseInput == Vector2.zero)
+            return;
         _playerTransform.rotation *= Quaternion.AngleAxis(mouseInput.x * _rotationSpeed * delta, Vector3.up);
         Vector3 localEuler = _cameraTransform.localRotation.eulerAngles;
 

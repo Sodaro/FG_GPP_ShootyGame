@@ -14,8 +14,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public ClampedFloatParameter zoomDither = new ClampedFloatParameter(0.0f, 0.0f, 1.0f);
         public ClampedFloatParameter anisotropy = new ClampedFloatParameter(0.0f, -1.0f, 1.0f);
         public BoolParameter applyToUIOverlay = new BoolParameter(false);
-
-        static AccumulationMotionBlurVolume s_Default = null;
+        private static AccumulationMotionBlurVolume s_Default = null;
         public static AccumulationMotionBlurVolume @default
         {
             get

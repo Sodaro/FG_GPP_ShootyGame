@@ -9,36 +9,35 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(FogVolume))]
     public class FogVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_IsEnabled;
-        SerializedDataParameter m_BlendMode;
-        SerializedDataParameter m_FogFalloffMode;
-        SerializedDataParameter m_Color;
-        SerializedDataParameter m_PrecisionAlpha;
-        SerializedDataParameter m_PrecisionAlphaDitherTexture;
-        SerializedDataParameter m_PrecisionAlphaDither;
-        SerializedDataParameter m_DistanceMin;
-        SerializedDataParameter m_DistanceMax;
-        SerializedDataParameter m_FogFalloffCurve;
-        SerializedDataParameter m_HeightFalloffEnabled;
-        SerializedDataParameter m_HeightFalloffMirrored;
-        SerializedDataParameter m_HeightMin;
-        SerializedDataParameter m_HeightMax;
-        SerializedDataParameter m_ColorLUTMode;
-        SerializedDataParameter m_ColorLUTTexture;
-        SerializedDataParameter m_ColorLUTRotationDegrees;
-        SerializedDataParameter m_ColorLUTWeight;
-        SerializedDataParameter m_ColorLUTWeightLayer1;
-
-        SerializedDataParameter m_IsAdditionalLayerEnabled;
-        SerializedDataParameter m_FogFalloffModeLayer1;
-        SerializedDataParameter m_ColorLayer1;
-        SerializedDataParameter m_DistanceMinLayer1;
-        SerializedDataParameter m_DistanceMaxLayer1;
-        SerializedDataParameter m_FogFalloffCurveLayer1;
-        SerializedDataParameter m_HeightFalloffEnabledLayer1;
-        SerializedDataParameter m_HeightFalloffMirroredLayer1;
-        SerializedDataParameter m_HeightMinLayer1;
-        SerializedDataParameter m_HeightMaxLayer1;
+        private SerializedDataParameter m_IsEnabled;
+        private SerializedDataParameter m_BlendMode;
+        private SerializedDataParameter m_FogFalloffMode;
+        private SerializedDataParameter m_Color;
+        private SerializedDataParameter m_PrecisionAlpha;
+        private SerializedDataParameter m_PrecisionAlphaDitherTexture;
+        private SerializedDataParameter m_PrecisionAlphaDither;
+        private SerializedDataParameter m_DistanceMin;
+        private SerializedDataParameter m_DistanceMax;
+        private SerializedDataParameter m_FogFalloffCurve;
+        private SerializedDataParameter m_HeightFalloffEnabled;
+        private SerializedDataParameter m_HeightFalloffMirrored;
+        private SerializedDataParameter m_HeightMin;
+        private SerializedDataParameter m_HeightMax;
+        private SerializedDataParameter m_ColorLUTMode;
+        private SerializedDataParameter m_ColorLUTTexture;
+        private SerializedDataParameter m_ColorLUTRotationDegrees;
+        private SerializedDataParameter m_ColorLUTWeight;
+        private SerializedDataParameter m_ColorLUTWeightLayer1;
+        private SerializedDataParameter m_IsAdditionalLayerEnabled;
+        private SerializedDataParameter m_FogFalloffModeLayer1;
+        private SerializedDataParameter m_ColorLayer1;
+        private SerializedDataParameter m_DistanceMinLayer1;
+        private SerializedDataParameter m_DistanceMaxLayer1;
+        private SerializedDataParameter m_FogFalloffCurveLayer1;
+        private SerializedDataParameter m_HeightFalloffEnabledLayer1;
+        private SerializedDataParameter m_HeightFalloffMirroredLayer1;
+        private SerializedDataParameter m_HeightMinLayer1;
+        private SerializedDataParameter m_HeightMaxLayer1;
 
         public override void OnEnable()
         {

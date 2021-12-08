@@ -1,12 +1,12 @@
 using Observer;
 using UnityEngine;
-public class Initializer : MonoBehaviour
+public class Initializer
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void Initialize()
+    private static void Initialize()
     {
         ServiceLocator.Initialize();
-        ServiceLocator.Current.Register(new EventHandler());
-        ServiceLocator.Current.Register(new AudioSystem());
+        ServiceLocator.Instance.Register(new EventHandler());
+        ServiceLocator.Instance.Register(new SceneHandler());
     }
 }

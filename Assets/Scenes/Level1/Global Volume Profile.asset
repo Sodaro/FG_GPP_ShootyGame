@@ -25,7 +25,7 @@ MonoBehaviour:
     m_Value: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     min: 0
   distanceMax:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 60
     min: 0.00001
   fogFalloffCurve:
     m_OverrideState: 1
@@ -276,7 +276,7 @@ MonoBehaviour:
     max: 1
   noiseIntensity:
     m_OverrideState: 1
-    m_Value: 0.07
+    m_Value: 0.143
     min: 0
     max: 1
   noiseSaturation:
@@ -286,7 +286,7 @@ MonoBehaviour:
     max: 1
   grateMaskIntensityMin:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.092
     min: 0
     max: 1
   grateMaskIntensityMax:

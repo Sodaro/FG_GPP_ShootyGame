@@ -82,10 +82,11 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
         public bool m_FirstTimeApply = true;
 
         private bool m_SurfaceOptionsFoldout = false;
+
         // private bool m_SurfaceInputsFoldout = false;
         // private bool m_AdvancedFoldout = false;
 
-        static StylesLayer s_Styles = null;
+        private static StylesLayer s_Styles = null;
         private static StylesLayer styles { get { if (s_Styles == null) s_Styles = new StylesLayer(); return s_Styles; } }
 
         public PSXTerrainShaderGUI()

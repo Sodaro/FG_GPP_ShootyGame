@@ -8,21 +8,20 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 {
     public partial class PSXRenderPipeline : UnityEngine.Rendering.RenderPipeline
     {
-        readonly PSXRenderPipelineAsset m_Asset;
+        private readonly PSXRenderPipelineAsset m_Asset;
         public PSXRenderPipelineAsset asset { get { return m_Asset; } }
 
         internal const PerObjectData k_RendererConfigurationBakedLighting = PerObjectData.LightProbe | PerObjectData.Lightmaps | PerObjectData.LightProbeProxyVolume;
         internal const PerObjectData k_RendererConfigurationBakedLightingWithShadowMask = k_RendererConfigurationBakedLighting | PerObjectData.OcclusionProbe | PerObjectData.OcclusionProbeProxyVolume | PerObjectData.ShadowMask;
         internal const PerObjectData k_RendererConfigurationDynamicLighting = PerObjectData.LightData | PerObjectData.LightIndices;
-
-        Material skyMaterial;
-        Material accumulationMotionBlurMaterial;
-        Material copyColorRespectFlipYMaterial;
-        Material crtMaterial;
-        int[] compressionCSKernels;
+        private Material skyMaterial;
+        private Material accumulationMotionBlurMaterial;
+        private Material copyColorRespectFlipYMaterial;
+        private Material crtMaterial;
+        private int[] compressionCSKernels;
 
         // Use to detect frame changes (for accurate frame count in editor, consider using psxCamera.GetCameraFrameCount)
-        int frameCount;
+        private int frameCount;
 
         public static PSXRenderPipeline instance = null;
 
@@ -40,14 +39,14 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             ConfigureSRPBatcherFromAsset(m_Asset);
         }
 
-        static void ConfigureGlobalRenderPipelineTag()
+        private static void ConfigureGlobalRenderPipelineTag()
         {
             // https://docs.unity3d.com/ScriptReference/Shader-globalRenderPipeline.html
             // Set globalRenderPipeline so that only subshaders with Tags{ "RenderPipeline" = "PSXRenderPipeline" } will be rendered.
             Shader.globalRenderPipeline = PSXStringConstants.s_GlobalRenderPipelineStr;
         }
 
-        static void ConfigureSRPBatcherFromAsset(PSXRenderPipelineAsset asset)
+        private static void ConfigureSRPBatcherFromAsset(PSXRenderPipelineAsset asset)
         {
             // TODO: Re-enable SRP Batcher support once PSXLit materials are SRP Batcher compatible.
             // Currently they are incompatible due to different variants sampling lightmap textures in the vertex shader and others sampling in the fragment shader.
@@ -55,7 +54,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             GraphicsSettings.useScriptableRenderPipelineBatching = false;
         }
 
-        void FindComputeKernels()
+        private void FindComputeKernels()
         {
             if (!IsComputeShaderSupportedPlatform()) { return; }
             compressionCSKernels = FindCompressionKernels(m_Asset);
@@ -86,7 +85,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             DisposeLighting();
         }
 
-        void PushCameraParameters(Camera camera, PSXCamera psxCamera, CommandBuffer cmd, out int rasterizationWidth, out int rasterizationHeight, out Vector4 cameraAspectModeUVScaleBias, bool isPSXQualityEnabled)
+        private void PushCameraParameters(Camera camera, PSXCamera psxCamera, CommandBuffer cmd, out int rasterizationWidth, out int rasterizationHeight, out Vector4 cameraAspectModeUVScaleBias, bool isPSXQualityEnabled)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushCameraParameters))
             {
@@ -379,12 +378,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static bool IsMainGameView(Camera camera)
+        private static bool IsMainGameView(Camera camera)
         {
             return camera.cameraType == CameraType.Game;
         }
 
-        static Color ComputeClearColorFromVolume()
+        private static Color ComputeClearColorFromVolume()
         {
             Color fogColorSRGB = GetFogColorFromFogVolume();
 
@@ -425,14 +424,14 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static Color GetFogColorFromFogVolume()
+        private static Color GetFogColorFromFogVolume()
         {
             var volumeSettings = VolumeManager.instance.stack.GetComponent<FogVolume>();
             if (!volumeSettings) volumeSettings = FogVolume.@default;
             return volumeSettings.color.value;
         }
 
-        static void ComputeTonemapperSettingsFromVolume(
+        private static void ComputeTonemapperSettingsFromVolume(
             out bool isEnabled,
             out float contrast,
             out float shoulder,
@@ -468,21 +467,21 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             crossTalkSaturation = Mathf.Lerp(1e-5f, 32.0f, volumeSettings.crossTalkSaturation.value);
         }
 
-        static bool EvaluateIsPSXQualityEnabledFromVolume()
+        private static bool EvaluateIsPSXQualityEnabledFromVolume()
         {
             var volumeSettings = VolumeManager.instance.stack.GetComponent<QualityOverrideVolume>();
             if (!volumeSettings) volumeSettings = QualityOverrideVolume.@default;
             return volumeSettings.isPSXQualityEnabled.value;
         }
 
-        static bool EvaluateIsDepthBufferEnabledFromVolume()
+        private static bool EvaluateIsDepthBufferEnabledFromVolume()
         {
             var volumeSettings = VolumeManager.instance.stack.GetComponent<CameraVolume>();
             if (!volumeSettings) volumeSettings = CameraVolume.@default;
             return volumeSettings.isDepthBufferEnabled.value;
         }
 
-        static void PushQualityOverrideParameters(Camera cmaera, CommandBuffer cmd, bool isPSXQualityEnabled)
+        private static void PushQualityOverrideParameters(Camera cmaera, CommandBuffer cmd, bool isPSXQualityEnabled)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushQualityOverrideParameters))
             {
@@ -495,7 +494,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushTonemapperParameters(Camera camera, CommandBuffer cmd)
+        private static void PushTonemapperParameters(Camera camera, CommandBuffer cmd)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushTonemapperParameters))
             {
@@ -521,7 +520,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushLightingParameters(Camera camera, CommandBuffer cmd)
+        private static void PushLightingParameters(Camera camera, CommandBuffer cmd)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushLightingParameters))
             {
@@ -540,7 +539,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushPreMainParameters(Camera camera, CommandBuffer cmd)
+        private static void PushPreMainParameters(Camera camera, CommandBuffer cmd)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PreMainParameters))
             {
@@ -556,7 +555,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushPreUIOverlayParameters(Camera camera, CommandBuffer cmd)
+        private static void PushPreUIOverlayParameters(Camera camera, CommandBuffer cmd)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PreUIOverlayParameters))
             {
@@ -572,7 +571,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static PerObjectData ComputePerObjectDataFromLightingVolume(Camera camera)
+        private static PerObjectData ComputePerObjectDataFromLightingVolume(Camera camera)
         {
             var volumeSettings = VolumeManager.instance.stack.GetComponent<LightingVolume>();
             if (!volumeSettings) volumeSettings = LightingVolume.@default;
@@ -599,7 +598,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return perObjectData;
         }
 
-        static bool ComputeDynamicLightingIsEnabled(Camera camera)
+        private static bool ComputeDynamicLightingIsEnabled(Camera camera)
         {
             var volumeSettings = VolumeManager.instance.stack.GetComponent<LightingVolume>();
             if (!volumeSettings) volumeSettings = LightingVolume.@default;
@@ -626,7 +625,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return new Vector2(precisionGeometryScale, precisionGeometryScaleInverse);
         }
 
-        static void PushPrecisionParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset)
+        private static void PushPrecisionParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushPrecisionParameters))
             {
@@ -710,7 +709,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushFogParameters(Camera camera, CommandBuffer cmd)
+        private static void PushFogParameters(Camera camera, CommandBuffer cmd)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushFogParameters))
             {
@@ -878,7 +877,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        void PushGlobalRasterizationParameters(Camera camera, CommandBuffer cmd, RTHandle rasterizationRT, int rasterizationWidth, int rasterizationHeight, bool hdrIsSupported)
+        private void PushGlobalRasterizationParameters(Camera camera, CommandBuffer cmd, RTHandle rasterizationRT, int rasterizationWidth, int rasterizationHeight, bool hdrIsSupported)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushGlobalRasterizationParameters))
             {
@@ -931,7 +930,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushGlobalPostProcessingParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset, RTHandle rasterizationRT, int rasterizationWidth, int rasterizationHeight, Vector4 cameraAspectModeUVScaleBias)
+        private static void PushGlobalPostProcessingParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset, RTHandle rasterizationRT, int rasterizationWidth, int rasterizationHeight, Vector4 cameraAspectModeUVScaleBias)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushGlobalPostProcessingParameters))
             {
@@ -979,7 +978,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static Texture2D GetFramebufferDitherTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
+        private static Texture2D GetFramebufferDitherTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
         {
             Texture2D ditherTexture = Texture2D.grayTexture;
             if (asset.renderPipelineResources.textures.framebufferDitherTex != null && asset.renderPipelineResources.textures.framebufferDitherTex.Length > 0)
@@ -991,7 +990,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return ditherTexture;
         }
 
-        static Texture2D GetAlphaClippingDitherTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
+        private static Texture2D GetAlphaClippingDitherTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
         {
             Texture2D ditherTexture = Texture2D.grayTexture;
             if (asset.renderPipelineResources.textures.alphaClippingDitherTex != null && asset.renderPipelineResources.textures.alphaClippingDitherTex.Length > 0)
@@ -1003,7 +1002,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return ditherTexture;
         }
 
-        static Texture2D GetWhiteNoise1024RGBTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
+        private static Texture2D GetWhiteNoise1024RGBTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
         {
             Texture2D whiteNoiseTexture = Texture2D.grayTexture;
             if (asset.renderPipelineResources.textures.whiteNoise1024RGBTex != null && asset.renderPipelineResources.textures.whiteNoise1024RGBTex.Length > 0)
@@ -1015,7 +1014,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return whiteNoiseTexture;
         }
 
-        static Texture2D GetBlueNoise16RGBTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
+        private static Texture2D GetBlueNoise16RGBTexFromAssetAndFrame(PSXRenderPipelineAsset asset, uint frameCount)
         {
             Texture2D blueNoiseTexture = Texture2D.grayTexture;
             if (asset.renderPipelineResources.textures.blueNoise16RGBTex != null && asset.renderPipelineResources.textures.blueNoise16RGBTex.Length > 0)
@@ -1027,7 +1026,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return blueNoiseTexture;
         }
 
-        static int ComputeCompressionKernelIndex(CompressionVolume.CompressionMode mode, CompressionVolume.CompressionColorspace colorspace)
+        private static int ComputeCompressionKernelIndex(CompressionVolume.CompressionMode mode, CompressionVolume.CompressionColorspace colorspace)
         {
             // WARNING: this kernel LUT calculation needs to stay in sync with both the kernel declarations in compression.compute,
             // and the enum definitions in CompressionVolume.
@@ -1036,7 +1035,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return compressionKernelIndex;
         }
 
-        int[] FindCompressionKernels(PSXRenderPipelineAsset asset)
+        private int[] FindCompressionKernels(PSXRenderPipelineAsset asset)
         {
             Debug.Assert(asset.renderPipelineResources.shaders.compressionCS, "Error: CompressionCS compute shader is unassigned in render pipeline resources. Assign a valid reference to this compute shader inside of render pipeline resources in the inspector.");
 
@@ -1050,7 +1049,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return kernels;
         }
 
-        static void PushCompressionParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset, RenderTexture rasterizationRT, int[] compressionCSKernels)
+        private static void PushCompressionParameters(Camera camera, CommandBuffer cmd, PSXRenderPipelineAsset asset, RenderTexture rasterizationRT, int[] compressionCSKernels)
         {
             if (!IsComputeShaderSupportedPlatform()) { return; }
 
@@ -1088,7 +1087,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushSkyParameters(Camera camera, CommandBuffer cmd, Material skyMaterial, PSXRenderPipelineAsset asset, int rasterizationWidth, int rasterizationHeight)
+        private static void PushSkyParameters(Camera camera, CommandBuffer cmd, Material skyMaterial, PSXRenderPipelineAsset asset, int rasterizationWidth, int rasterizationHeight)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushSkyParameters))
             {
@@ -1257,7 +1256,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void TryDrawAccumulationMotionBlurPreUIOverlay(PSXCamera psxCamera, CommandBuffer cmd, Material accumulationMotionBlurMaterial, Material copyColorRespectFlipYMaterial)
+        private static void TryDrawAccumulationMotionBlurPreUIOverlay(PSXCamera psxCamera, CommandBuffer cmd, Material accumulationMotionBlurMaterial, Material copyColorRespectFlipYMaterial)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_DrawAccumulationMotionBlurPreUIOverlay))
             {
@@ -1288,7 +1287,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void TryDrawAccumulationMotionBlurPostUIOverlay(PSXCamera psxCamera, CommandBuffer cmd, Material accumulationMotionBlurMaterial)
+        private static void TryDrawAccumulationMotionBlurPostUIOverlay(PSXCamera psxCamera, CommandBuffer cmd, Material accumulationMotionBlurMaterial)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_DrawAccumulationMotionBlurPostUIOverlay))
             {
@@ -1308,7 +1307,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void TryDrawAccumulationMotionBlurFinalBlit(PSXCamera psxCamera, CommandBuffer cmd, RenderTexture renderTargetCurrent, Material copyColorRespectFlipYMaterial)
+        private static void TryDrawAccumulationMotionBlurFinalBlit(PSXCamera psxCamera, CommandBuffer cmd, RenderTexture renderTargetCurrent, Material copyColorRespectFlipYMaterial)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_DrawAccumulationMotionBlurFinalBlit))
             {
@@ -1333,7 +1332,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void PushAccumulationMotionBlurParameters(PSXCamera psxCamera, CommandBuffer cmd, AccumulationMotionBlurVolume volumeSettings)
+        private static void PushAccumulationMotionBlurParameters(PSXCamera psxCamera, CommandBuffer cmd, AccumulationMotionBlurVolume volumeSettings)
         {
             RTHandle rasterizationHistoryRT = psxCamera.GetPreviousFrameRT((int)PSXCameraFrameHistoryType.Rasterization);
 
@@ -1356,7 +1355,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             cmd.SetGlobalTexture(PSXShaderIDs._RasterizationHistoryRT, rasterizationHistoryRT);
         }
 
-        static void CopyColorRespectFlipY(Camera camera, CommandBuffer cmd, RTHandle source, RTHandle destination, Material copyColorRespectFlipYMaterial)
+        private static void CopyColorRespectFlipY(Camera camera, CommandBuffer cmd, RTHandle source, RTHandle destination, Material copyColorRespectFlipYMaterial)
         {
             // Flip logic taken from URP:
             // Blit has logic to flip projection matrix when rendering to render texture.
@@ -1381,7 +1380,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             PSXRenderPipeline.DrawFullScreenQuad(cmd, copyColorRespectFlipYMaterial);
         }
 
-        static void PushCathodeRayTubeParameters(Camera camera, CommandBuffer cmd, Material crtMaterial)
+        private static void PushCathodeRayTubeParameters(Camera camera, CommandBuffer cmd, Material crtMaterial)
         {
             using (new ProfilingScope(cmd, PSXProfilingSamplers.s_PushCathodeRayTubeParameters))
             {
@@ -1511,7 +1510,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static void DrawSceneViewUI(Camera camera)
+        private static void DrawSceneViewUI(Camera camera)
         {
 #if UNITY_EDITOR
             // Emit scene view UI
@@ -1520,37 +1519,37 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 #endif
         }
 
-        static void DrawBackgroundOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawBackgroundOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawOpaque(context, camera, PSXRenderQueue.k_RenderQueue_BackgroundAllOpaque, ref cullingResults);
         }
 
-        static void DrawBackgroundTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawBackgroundTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawTransparent(context, camera, PSXRenderQueue.k_RenderQueue_BackgroundTransparent, ref cullingResults);
         }
 
-        static void DrawMainOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawMainOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawOpaque(context, camera, PSXRenderQueue.k_RenderQueue_MainAllOpaque, ref cullingResults);
         }
 
-        static void DrawMainTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawMainTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawTransparent(context, camera, PSXRenderQueue.k_RenderQueue_MainTransparent, ref cullingResults);
         }
 
-        static void DrawUIOverlayOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawUIOverlayOpaque(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawOpaque(context, camera, PSXRenderQueue.k_RenderQueue_UIOverlayAllOpaque, ref cullingResults);
         }
 
-        static void DrawUIOverlayTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawUIOverlayTransparent(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             DrawTransparent(context, camera, PSXRenderQueue.k_RenderQueue_UIOverlayTransparent, ref cullingResults);
         }
 
-        static void DrawOpaque(ScriptableRenderContext context, Camera camera, RenderQueueRange range, ref CullingResults cullingResults)
+        private static void DrawOpaque(ScriptableRenderContext context, Camera camera, RenderQueueRange range, ref CullingResults cullingResults)
         {
             // If the depth buffer is disabled, trigger back to front rendering, instead of QuantizedFrontToBack rendering.
             // Note there are additional criteria flags that we always care about, such as SortingLayer, RenderQueue, etc, which are outlined here:
@@ -1582,7 +1581,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
         }
 
-        static void DrawTransparent(ScriptableRenderContext context, Camera camera, RenderQueueRange range, ref CullingResults cullingResults)
+        private static void DrawTransparent(ScriptableRenderContext context, Camera camera, RenderQueueRange range, ref CullingResults cullingResults)
         {
             // Draw transparent objects using PSX shader pass
             var sortingSettings = new SortingSettings(camera)
@@ -1606,12 +1605,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
         }
 
-        static void DrawSkybox(ScriptableRenderContext context, Camera camera)
+        private static void DrawSkybox(ScriptableRenderContext context, Camera camera)
         {
             context.DrawSkybox(camera);
         }
 
-        static void DrawLegacyCanvasUI(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
+        private static void DrawLegacyCanvasUI(ScriptableRenderContext context, Camera camera, ref CullingResults cullingResults)
         {
             // Draw legacy Canvas UI meshes.
             var sortingSettings = new SortingSettings(camera)
@@ -1630,12 +1629,12 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         }
 
         // Respects RTHandle scaling.
-        static void SetViewport(CommandBuffer cmd, RTHandle target)
+        private static void SetViewport(CommandBuffer cmd, RTHandle target)
         {
             CoreUtils.SetViewport(cmd, target);
         }
 
-        static void SetViewport(CommandBuffer cmd, Camera camera, RenderTexture target)
+        private static void SetViewport(CommandBuffer cmd, Camera camera, RenderTexture target)
         {
             int width = camera.pixelWidth;
             int height = camera.pixelHeight;
@@ -1648,8 +1647,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             cmd.SetViewport(new Rect(0.0f, 0.0f, width, height));
         }
 
-        static Mesh s_FullscreenMesh = null;
-        static Mesh fullscreenMesh
+        private static Mesh s_FullscreenMesh = null;
+
+        private static Mesh fullscreenMesh
         {
             get
             {
@@ -1682,9 +1682,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        static Cubemap s_whiteCubemap = null;
+        private static Cubemap s_whiteCubemap = null;
 
-        static Cubemap whiteCubemap
+        private static Cubemap whiteCubemap
         {
             get
             {
@@ -1705,13 +1705,13 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         }
 
         // Draws a fullscreen quad (to maintain webgl build support).
-        static void DrawFullScreenQuad(CommandBuffer cmd, Material material,
+        private static void DrawFullScreenQuad(CommandBuffer cmd, Material material,
             MaterialPropertyBlock properties = null, int shaderPassId = 0)
         {
             cmd.DrawMesh(PSXRenderPipeline.fullscreenMesh, Matrix4x4.identity, material);
         }
 
-        static void DrawGizmos(ScriptableRenderContext context, Camera camera, GizmoSubset gizmoSubset)
+        private static void DrawGizmos(ScriptableRenderContext context, Camera camera, GizmoSubset gizmoSubset)
         {
 #if UNITY_EDITOR
             if (UnityEditor.Handles.ShouldRenderGizmos())
@@ -1787,8 +1787,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
 
         }
 
-
-        static bool ComputeCameraProjectionIsFlippedY(Camera camera)
+        private static bool ComputeCameraProjectionIsFlippedY(Camera camera)
         {
             bool isFlipped = GL.GetGPUProjectionMatrix(camera.projectionMatrix, true).inverse.MultiplyPoint(new Vector3(0, 1, 0)).y < 0;
             return isFlipped;
@@ -1811,7 +1810,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         /// It is different from the aspect ratio of <paramref name="resolution"/> for anamorphic projections.
         /// </param>
         /// <returns></returns>
-        static Matrix4x4 ComputePixelCoordToWorldSpaceViewDirectionMatrix(Camera camera, Matrix4x4 viewMatrix, Vector4 resolution, float aspect = -1)
+        private static Matrix4x4 ComputePixelCoordToWorldSpaceViewDirectionMatrix(Camera camera, Matrix4x4 viewMatrix, Vector4 resolution, float aspect = -1)
         {
             float verticalFoV = camera.GetGateFittedFieldOfView() * Mathf.Deg2Rad;
             Vector2 lensShift = camera.GetGateFittedLensShift();
@@ -1819,7 +1818,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return ComputePixelCoordToWorldSpaceViewDirectionMatrix(verticalFoV, lensShift, resolution, viewMatrix, renderToCubemap: false, aspect);
         }
 
-        static Matrix4x4 ComputePixelCoordToWorldSpaceViewDirectionMatrix(float verticalFoV, Vector2 lensShift, Vector4 screenSize, Matrix4x4 worldToViewMatrix, bool renderToCubemap, float aspectRatio = -1)
+        private static Matrix4x4 ComputePixelCoordToWorldSpaceViewDirectionMatrix(float verticalFoV, Vector2 lensShift, Vector4 screenSize, Matrix4x4 worldToViewMatrix, bool renderToCubemap, float aspectRatio = -1)
         {
             aspectRatio = aspectRatio < 0 ? screenSize.x * screenSize.w : aspectRatio;
 
@@ -1860,7 +1859,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return Matrix4x4.Transpose(worldToViewMatrix.transpose * viewSpaceRasterTransform);
         }
 
-        static float GetAnimatedMaterialsTime(Camera camera)
+        private static float GetAnimatedMaterialsTime(Camera camera)
         {
             float time = 0.0f;
             bool animateMaterials = CoreUtils.AreAnimatedMaterialsEnabled(camera);

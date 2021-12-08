@@ -12,20 +12,14 @@ public class EnemyHostileState : EnemyState
     private int _retryCount = 0;
     #endregion
     #region Public Methods
-    public override void Enter(Enemy enemy)
+    public override void Enter(Enemy owner)
     {
-        base.Enter(enemy);
+        base.Enter(owner);
     }
 
     public override void Exit()
     {
         base.Exit();
-    }
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        _owner.AlignWithSurface();
     }
 
     public override void Update()
@@ -40,7 +34,7 @@ public class EnemyHostileState : EnemyState
                 _retryCount++;
                 if (_retryCount >= MAX_RETRY_COUNT)
                 {
-                    _owner.ReturnToStart();
+                    _owner.SetIdle();
                 }
             }
             else
@@ -48,7 +42,7 @@ public class EnemyHostileState : EnemyState
                 _retryCount = 0;
                 _owner.UpdateDestination();
             }
-                
+
             _destinationUpdateTimer = 0;
         }
     }

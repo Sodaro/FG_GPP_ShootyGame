@@ -9,13 +9,13 @@ namespace HauntedPSX.RenderPipelines.PSX.Editor
     [VolumeComponentEditor(typeof(AccumulationMotionBlurVolume))]
     public class AccumulationMotionBlurVolumeEditor : VolumeComponentEditor
     {
-        SerializedDataParameter m_Weight;
-        SerializedDataParameter m_Vignette;
-        SerializedDataParameter m_Dither;
-        SerializedDataParameter m_Zoom;
-        SerializedDataParameter m_ZoomDither;
-        SerializedDataParameter m_Anisotropy;
-        SerializedDataParameter m_ApplyToUIOverlay;
+        private SerializedDataParameter m_Weight;
+        private SerializedDataParameter m_Vignette;
+        private SerializedDataParameter m_Dither;
+        private SerializedDataParameter m_Zoom;
+        private SerializedDataParameter m_ZoomDither;
+        private SerializedDataParameter m_Anisotropy;
+        private SerializedDataParameter m_ApplyToUIOverlay;
 
         public override void OnEnable()
         {

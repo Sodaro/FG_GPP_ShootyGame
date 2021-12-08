@@ -50,7 +50,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             Reset();
         }
 
-        void Reset()
+        private void Reset()
         {
             isFirstFrame = true;
             cameraFrameCount = 0;
@@ -96,7 +96,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             return historyRTSystem.GetFrameRT(id, 0);
         }
 
-        void Dispose()
+        private void Dispose()
         {
             Reset();
 
@@ -163,7 +163,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             ++cameraAccumulationMotionBlurFrameCount;
         }
 
-        void EnsureRasterizationRT(PSXCameraUpdateContext context)
+        private void EnsureRasterizationRT(PSXCameraUpdateContext context)
         {
             uint rasterizationRTCountRequested = context.rasterizationHistoryRequested ? 2u : 1u;
             uint rasterizationRTCountCurrent = cameraAccumulationMotionBlurBufferCount;
@@ -192,7 +192,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        void EnsureRasterizationPreUIRT(PSXCameraUpdateContext context)
+        private void EnsureRasterizationPreUIRT(PSXCameraUpdateContext context)
         {
             bool rasterizationPreUIRTAllocated = (GetCurrentFrameRT((int)PSXCameraFrameHistoryType.RasterizationPreUICopy) != null);
 
@@ -213,7 +213,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        void EnsureRasterizationDepthStencilRT(PSXCameraUpdateContext context)
+        private void EnsureRasterizationDepthStencilRT(PSXCameraUpdateContext context)
         {
             bool depthStencilRTAllocated = GetCurrentFrameRT((int)PSXCameraFrameHistoryType.RasterizationDepthStencil) != null;
             if (context.rasterizationDepthBufferRequested)
@@ -249,10 +249,10 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         }
 
         // Workaround for the Allocator callback so it doesn't allocate memory because of the capture of scaleFactor.
-        struct RasterizationRTAllocator
+        private struct RasterizationRTAllocator
         {
-            float scaleFactor;
-            bool enableRandomWrite;
+            private float scaleFactor;
+            private bool enableRandomWrite;
 
             public RasterizationRTAllocator(float scaleFactor, bool enableRandomWrite)
             {
@@ -275,9 +275,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        struct RasterizationPreUIRTAllocator
+        private struct RasterizationPreUIRTAllocator
         {
-            float scaleFactor;
+            private float scaleFactor;
 
             public RasterizationPreUIRTAllocator(float scaleFactor)
             {
@@ -299,9 +299,9 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
             }
         }
 
-        struct RasterizationDepthStencilRTAllocator
+        private struct RasterizationDepthStencilRTAllocator
         {
-            float scaleFactor;
+            private float scaleFactor;
 
             public RasterizationDepthStencilRTAllocator(float scaleFactor)
             {

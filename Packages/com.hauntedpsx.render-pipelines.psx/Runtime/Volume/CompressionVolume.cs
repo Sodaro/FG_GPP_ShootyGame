@@ -44,8 +44,7 @@ namespace HauntedPSX.RenderPipelines.PSX.Runtime
         public ClampedFloatParameter accuracy = new ClampedFloatParameter(0.0f, 0.0f, 1.0f);
         public CompressionModeParameter mode = new CompressionModeParameter(CompressionMode.Accurate);
         public CompressionColorspaceParameter colorspace = new CompressionColorspaceParameter(CompressionColorspace.YUV);
-
-        static CompressionVolume s_Default = null;
+        private static CompressionVolume s_Default = null;
         public static CompressionVolume @default
         {
             get

@@ -1,19 +1,18 @@
 using Observer;
 using UnityEngine;
-[RequireComponent(typeof(PlayerInput), typeof(PlayerPhysics))]
+[RequireComponent(typeof(PlayerPhysics))]
 [RequireComponent(typeof(PlayerWeaponHandler), typeof(PlayerMouseLook))]
 public class PlayerController : MonoBehaviour, IHealth
 {
     #region Private Fields
     private const float HEALTH_NORMAL_MAX = 100;
-    private const float HEALTH_TOTAL_MAX = 150;
+    private const float HEALTH_TOTAL_MAX = 200;
     private bool _isDead = false;
 
-    private float _currentHealth = 100;
+    private float _currentHealth = 80;
     private float _stunTimer = 0;
     private float _stunDuration = 1f;
 
-    private PlayerInput _input;
     private PlayerPhysics _physics;
     private PlayerMouseLook _mouseLook;
     private PlayerWeaponHandler _weaponHandler;
@@ -22,39 +21,21 @@ public class PlayerController : MonoBehaviour, IHealth
     #region Private Methods
     private void Awake()
     {
-        _input = gameObject.AddComponent<PlayerInput>();
         _physics = GetComponent<PlayerPhysics>();
         _mouseLook = GetComponent<PlayerMouseLook>();
         _weaponHandler = GetComponent<PlayerWeaponHandler>();
-
-    }
-    private void OnEnable()
-    {
-        ServiceLocator.Current.Get<EventHandler>().onEnemyDeath += PlayerController_onEnemyDeath;
-    }
-
-    private void OnDisable()
-    {
-        ServiceLocator.Current.Get<EventHandler>().onEnemyDeath -= PlayerController_onEnemyDeath;
-    }
-
-    private void PlayerController_onEnemyDeath()
-    {
-        //Debug.Log("Enemy died!");
     }
 
     private void Start()
     {
-        _input.Initialize();
-        _physics.Initialize(_input);
-        _mouseLook.Initialize(_input);
-        _weaponHandler.Initialize(_input);
+        _physics.Initialize();
+        _mouseLook.Initialize();
+        _weaponHandler.Initialize();
     }
 
     private void Update()
     {
-        if (_isDead)
-            return;
+        if (_isDead) return;
 
         float dt = Time.deltaTime;
         if (_stunTimer > 0)
@@ -63,33 +44,33 @@ public class PlayerController : MonoBehaviour, IHealth
         {
             _physics.SetStunned(false);
         }
-
-        _input.OnUpdate();
-        _mouseLook.OnUpdate(delta: dt);
-        //_weaponHandler.OnUpdate(delta: dt);
+        InputHandler.InputVars inputs = InputHandler.Instance.Inputs;
+        _mouseLook.OnUpdate(delta: dt, inputs);
+        _weaponHandler.OnUpdate(delta: dt);
     }
 
     private void FixedUpdate()
     {
         float fdt = Time.fixedDeltaTime;
-        _physics.OnFixedUpdate(fixedDelta: fdt);
-        if (_isDead)
-            return;
+        InputHandler.InputVars inputs = InputHandler.Instance.Inputs;
+        _physics.OnFixedUpdate(fixedDelta: fdt, inputs);
 
-        _weaponHandler.OnFixedUpdate(fixedDelta: fdt);
-        //if (_weaponHandler.dirtyFlag)
-        //{
-            
-        //}
+        if (_isDead) return;
+
+        _weaponHandler.OnFixedUpdate(fixedDelta: fdt, inputs);
     }
 
+    public bool CanHeal()
+    {
+        return _currentHealth < HEALTH_NORMAL_MAX;
+    }
+    public bool CanOverHeal()
+    {
+        return _currentHealth < HEALTH_TOTAL_MAX;
+    }
     public void ReduceHealth(float amount)
     {
-        if (_isDead)
-            return;
-
-        if (_stunTimer > 0)
-            return;
+        if (_isDead || _stunTimer > 0) return;
 
         _currentHealth -= amount;
         _physics.SetStunned(true);
@@ -97,37 +78,31 @@ public class PlayerController : MonoBehaviour, IHealth
         if (_currentHealth <= 0)
         {
             _isDead = true;
-            ServiceLocator.Current.Get<EventHandler>().RaiseOnPlayerDeath();
+            ServiceLocator.Instance.Get<EventHandler>().RaiseOnPlayerDeath();
         }
         else
         {
-            ServiceLocator.Current.Get<EventHandler>().RaiseOnPlayerDamageTaken();
+            ServiceLocator.Instance.Get<EventHandler>().RaiseOnPlayerDamageTaken((int)_currentHealth);
         }
     }
 
-    public void IncreaseHealth(float amount)
+    public void IncreaseHealth(float amount, bool canOverHeal)
     {
-        if (_isDead)
-            return;
+        if (_isDead) return;
+
         float newAmount = _currentHealth + amount;
-        if (newAmount > HEALTH_NORMAL_MAX)
+
+        if (canOverHeal && newAmount > HEALTH_TOTAL_MAX)
+        {
+            newAmount = HEALTH_TOTAL_MAX;
+        }
+        else if (!canOverHeal && newAmount > HEALTH_NORMAL_MAX)
         {
             newAmount = HEALTH_NORMAL_MAX;
         }
 
-
         _currentHealth = newAmount;
-    }
-
-    public void OverHeal(float amount)
-    {
-        if (_isDead)
-        {
-            return;
-        }
-        float newAmount = _currentHealth + amount;
-        if (newAmount > HEALTH_TOTAL_MAX)
-            newAmount = HEALTH_TOTAL_MAX;
+        ServiceLocator.Instance.Get<EventHandler>().RaiseOnPlayerHeal((int)_currentHealth);
     }
     #endregion
 }

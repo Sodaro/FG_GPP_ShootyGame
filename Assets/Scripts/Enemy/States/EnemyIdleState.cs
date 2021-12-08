@@ -20,21 +20,20 @@ public class EnemyIdleState : EnemyState
         base.Exit();
     }
 
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
-
     public override void Update()
     {
         base.Update();
         if (_owner.HasTarget == false)
             return;
 
+        float? dist = _owner.DistanceToTarget;
+        if (dist == null)
+            return;
+
         if (_owner.CheckTargetPathValididty() == false)
             return;
 
-        if (_owner.DistanceToTarget < 50f)
+        if (dist < 50f)
         {
             _owner.SetHostile();
         }
