@@ -11,8 +11,13 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private Image _deathImage = null;
     [SerializeField] private TMP_Text _healthText = null;
     #endregion
-    #region Private Fields
+
     private delegate void OnFadeFinished();
+
+    #region Private Fields
+    private Color _red;
+    private Color _cyan;
+    
     private event OnFadeFinished _onFadeFinished;
     private Coroutine _coroutine = null;
     #endregion
@@ -31,6 +36,15 @@ public class UIHandler : MonoBehaviour
         ServiceLocator.Instance.Get<EventHandler>().onPlayerDeath += ActivateDeathPanel;
     }
 
+    private void Awake()
+    {
+        _cyan = Color.cyan;
+        _cyan.a = 0.6f;
+
+        _red = Color.red;
+        _red.a = 0.6f;
+    }
+
     private void UpdateHealthText(int newValue)
     {
         _healthText.text = newValue.ToString();
@@ -44,7 +58,7 @@ public class UIHandler : MonoBehaviour
             bool success = int.TryParse(_healthText.text, out int oldHealth);
             if (success)
             {
-                color = newHealth > oldHealth ? Color.cyan : Color.red;
+                color = newHealth > oldHealth ? _cyan : _red;
             }
             UpdateHealthText(newHealth);
             _effectImage.gameObject.SetActive(true);

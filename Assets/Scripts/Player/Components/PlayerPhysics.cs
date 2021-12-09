@@ -34,14 +34,13 @@ public class PlayerPhysics : PlayerBaseComponent
 
         if (_isGrounded)
         {
-            _velocity.y = 0;
             if (_isStunned == false)
             {
                 float speed = inputs.sprintIsHeld ? _sprintSpeed : _moveSpeed;
                 Vector2 inputDir = inputs.moveInput;
                 _moveDirection = (inputDir.x * transform.right + inputDir.y * transform.forward).normalized;
                 Vector3 inputVelocity = _moveDirection * speed;
-                _velocity = new Vector3(inputVelocity.x, _velocity.y, inputVelocity.z);
+                _velocity = new Vector3(inputVelocity.x, 0, inputVelocity.z);
                 if (inputs.jumpInput)
                     HandleJump();
             }

@@ -182,7 +182,6 @@ GameObject:
   - component: {fileID: 3275818641793463703}
   - component: {fileID: 3275818641793463702}
   - component: {fileID: 3275818641793463700}
-  - component: {fileID: 3275818641793463701}
   - component: {fileID: 3275818641793463698}
   - component: {fileID: 3275818641793463699}
   - component: {fileID: 2086901393}
@@ -200,14 +199,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3275818641793463708}
-  m_LocalRotation: {x: -0.004790863, y: 0, z: 0, w: 0.99998856}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.63, y: 1.02, z: -1.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3275818641723873835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -0.549, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3275818641793463705
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -223,7 +222,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3275818641793463708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -311,23 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea09d216ceb24d948912fdef2fb6d8e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dirtyFlag: 0
   _sprintSpeed: 10
   _moveSpeed: 5
   _jumpSpeed: 5
---- !u!114 &3275818641793463701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3275818641793463708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e10c8b0bf403d004db9d994609a11599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirtyFlag: 0
 --- !u!114 &3275818641793463698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,7 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98badaf08efad0b4eb1b57ebb66d7ff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dirtyFlag: 0
   _muzzleFlashObject: {fileID: 1938488959600671409}
   _muzzleTransform: {fileID: 3275818642235223986}
 --- !u!114 &3275818641793463699
@@ -355,7 +339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 232ff6af94554e54da2aef5dd56c1edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dirtyFlag: 0
   _rotationSpeed: 100
 --- !u!82 &2086901393
 AudioSource:

@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour, IHealth
 
     private float _currentHealth = 80;
     private float _stunTimer = 0;
-    private float _stunDuration = 1f;
+    private float _stunDuration = 0.5f;
 
     private PlayerPhysics _physics;
     private PlayerMouseLook _mouseLook;

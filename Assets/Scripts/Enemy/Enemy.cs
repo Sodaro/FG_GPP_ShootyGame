@@ -109,6 +109,7 @@ public class Enemy : MonoBehaviour, IHealth
 
     public void IncreaseHealth(float amount, bool canOverHeal)
     {
+        //the enemies currently have no way of healing, but could be an added feature in the future
         throw new System.NotImplementedException();
     }
 

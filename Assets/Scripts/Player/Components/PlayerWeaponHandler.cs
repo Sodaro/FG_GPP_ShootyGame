@@ -16,6 +16,7 @@ public class PlayerWeaponHandler : PlayerBaseComponent
         public float range;
         public int mask;
     };
+
     #region Serialized Fields
     [SerializeField] private GameObject _muzzleFlashObject = null;
     [SerializeField] private Transform _muzzleTransform = null;
@@ -80,8 +81,13 @@ public class PlayerWeaponHandler : PlayerBaseComponent
             _muzzleTimer = MUZZLE_EFFECT_DURATION;
             _muzzleFlashObject.SetActive(true);
             _weaponAudioSource.PlaySoundRandomPitch(0.75f, 1.1f);
-            LinePool.Instance.Get().SetLinePositions(startPos, endPos);
 
+            BulletLine line = LinePool.Instance.Get();
+            if (line != null)
+            {
+                line.SetLinePositions(startPos, endPos);
+            }
+            
             HandleShot(_unhandledShot);
             _shootTimer = _timeBetweenShots;
         }

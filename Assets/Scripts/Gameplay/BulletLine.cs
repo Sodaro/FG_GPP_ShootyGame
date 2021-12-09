@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class BulletLine : MonoBehaviour
 {
-    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private LineRenderer _lineRenderer;
     #region Public Methods
     public void SetLinePositions(Vector3 startPos, Vector3 endPos)
     {
-        lineRenderer.SetPositions(new Vector3[2] { startPos, endPos });
+        _lineRenderer.SetPositions(new Vector3[2] { startPos, endPos });
         StartCoroutine(DisableAfterTime(0.5f));
     }
     #endregion

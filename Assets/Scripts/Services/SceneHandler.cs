@@ -3,8 +3,8 @@ public class SceneHandler : IService
 {
     public enum Scene
     {
+        Menu,
         Level1,
-        Level2
     }
 
     public void LoadScene(Scene scene)

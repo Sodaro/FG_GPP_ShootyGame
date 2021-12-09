@@ -1,14 +1,5 @@
 public class EnemyIdleState : EnemyState
 {
-    #region Serialized Fields
-
-    #endregion
-    #region Private Fields
-
-    #endregion
-    #region Private Methods
-
-    #endregion
     #region Public Methods
     public override void Enter(Enemy enemy)
     {
@@ -23,19 +14,19 @@ public class EnemyIdleState : EnemyState
     public override void Update()
     {
         base.Update();
-        if (_owner.HasTarget == false)
+        if (Owner.HasTarget == false)
             return;
 
-        float? dist = _owner.DistanceToTarget;
+        float? dist = Owner.DistanceToTarget;
         if (dist == null)
             return;
 
-        if (_owner.CheckTargetPathValididty() == false)
+        if (Owner.CheckTargetPathValididty() == false)
             return;
 
         if (dist < 50f)
         {
-            _owner.SetHostile();
+            Owner.SetHostile();
         }
     }
     #endregion

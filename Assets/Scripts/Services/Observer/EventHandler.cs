@@ -5,13 +5,11 @@ namespace Observer
         public delegate void OnPlayerDeath();
         public delegate void OnPlayerHeal(int newAmount);
         public delegate void OnPlayerDamageTaken(int newAmount);
-        public delegate void OnPlayerJump();
         public delegate void OnEnemyDeath();
 
         public event OnPlayerDeath onPlayerDeath;
         public event OnPlayerHeal onPlayerHeal;
         public event OnPlayerDamageTaken onPlayerDamageTaken;
-        public event OnPlayerJump onPlayerJump;
         public event OnEnemyDeath onEnemyDeath;
 
         public void RaiseOnEnemyDeath()
@@ -19,14 +17,6 @@ namespace Observer
             if (onEnemyDeath != null)
             {
                 onEnemyDeath.Invoke();
-            }
-        }
-
-        public void RaiseOnPlayerJump()
-        {
-            if (onPlayerJump != null)
-            {
-                onPlayerJump.Invoke();
             }
         }
 
