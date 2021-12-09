@@ -6,6 +6,7 @@ using PlayerLoopType = UnityEngine.PlayerLoop;
 
 public class InputHandler : MonoBehaviour
 {
+    //Credits to Dmytro Ivanov for sharing a system for injecting EarlyUpdate
     private struct MyEarlyUpdateCallerTag
     {
     };
